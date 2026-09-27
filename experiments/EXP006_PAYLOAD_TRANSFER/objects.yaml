@@ -1,0 +1,27 @@
+objects:
+  - object_id: rack_opened
+    name: Rack open state marker
+    type: fiducial_state
+    criticality: high
+    marker_id: 13
+  - object_id: red_box
+    name: Red payload box
+    type: color_segmented_payload
+    criticality: high
+  - object_id: yellow_box
+    name: Yellow payload box
+    type: color_segmented_payload
+    criticality: high
+  - object_id: both_boxes_verified
+    name: Both payload boxes verified in zones
+    type: derived_visual_condition
+    criticality: high
+  - object_id: rack_closed
+    name: Rack closed state marker
+    type: fiducial_state
+    criticality: high
+    marker_id: 14
+  - object_id: transfer_complete
+    name: Operator completion action
+    type: operator_action
+    criticality: high

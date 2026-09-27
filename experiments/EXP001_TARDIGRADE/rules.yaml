@@ -1,0 +1,114 @@
+rules:
+  - rule_id: R001
+    experiment_id: EXP001
+    step_id: S001
+    rule_type: SEQUENCE
+    condition: "activity == CHECK_EQUIPMENT"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Equipment check completed. Proceed to retrieve the sample."
+  - rule_id: R002
+    experiment_id: EXP001
+    step_id: S002
+    rule_type: ACTIVITY
+    condition: "activity == RETRIEVE_SAMPLE"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Sample retrieved. Proceed to open the sample chamber."
+  - rule_id: R003
+    experiment_id: EXP001
+    step_id: S003
+    rule_type: ACTIVITY
+    condition: "activity == OPEN_CONTAINER"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Sample chamber opened. Proceed to transfer the sample."
+  - rule_id: R004
+    experiment_id: EXP001
+    step_id: S004
+    rule_type: ACTIVITY
+    condition: "activity == TRANSFER_SAMPLE"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Sample transferred. Proceed to start the experiment."
+  - rule_id: R005
+    experiment_id: EXP001
+    step_id: S005
+    rule_type: ACTIVITY
+    condition: "activity == START_EXPERIMENT"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Experiment started. Proceed to record the result."
+  - rule_id: R006
+    experiment_id: EXP001
+    step_id: S006
+    rule_type: ACTIVITY
+    condition: "activity == RECORD_RESULT"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Result recorded. Proceed to secure the sample."
+  - rule_id: R007
+    experiment_id: EXP001
+    step_id: S007
+    rule_type: ACTIVITY
+    condition: "activity == SECURE_SAMPLE"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Sample secured. Proceed to complete the experiment."
+  - rule_id: R008
+    experiment_id: EXP001
+    step_id: S008
+    rule_type: ACTIVITY
+    condition: "activity == COMPLETE_EXPERIMENT"
+    result: ADVANCE
+    severity: INFO
+    guidance: "Experiment completed successfully."
+  - rule_id: R009
+    experiment_id: EXP001
+    step_id: S002
+    rule_type: OBJECT
+    condition: "activity == RETRIEVE_SAMPLE and object != biological_sample"
+    result: DEVIATION
+    severity: HIGH
+    guidance: "Wrong object detected. Please select the biological sample."
+  - rule_id: R010
+    experiment_id: EXP001
+    step_id: S003
+    rule_type: SEQUENCE
+    condition: "activity == START_EXPERIMENT"
+    result: DEVIATION
+    severity: HIGH
+    guidance: "Wrong sequence. Open the sample chamber before starting the experiment."
+  - rule_id: R011
+    experiment_id: EXP001
+    step_id: S003
+    rule_type: SKIPPED_STEP
+    condition: "future_step_detected == true"
+    result: DEVIATION
+    severity: HIGH
+    guidance: "A required step was skipped. Complete the current step first."
+  - rule_id: R012
+    experiment_id: EXP001
+    step_id: S002
+    rule_type: PREMATURE_ACTION
+    condition: "activity == START_EXPERIMENT"
+    result: DEVIATION
+    severity: HIGH
+    guidance: "This action is premature. Complete the required previous steps first."
+  - rule_id: R013
+    experiment_id: EXP001
+    step_id: S001
+    rule_type: CONFIDENCE
+    condition: "confidence < 0.70"
+    result: UNCERTAIN
+    severity: MEDIUM
+    guidance: "Detection confidence is low. Please repeat or hold the action for verification."
+  - rule_id: R014
+    experiment_id: EXP001
+    step_id: S002
+    rule_type: RECOVERY
+    condition: "previous_status == DEVIATION and activity == RETRIEVE_SAMPLE and object == biological_sample"
+    result: RECOVER
+    severity: INFO
+    guidance: "Correct sample detected. Deviation recovered. Continue the protocol."
+

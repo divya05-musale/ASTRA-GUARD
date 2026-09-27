@@ -1,0 +1,8 @@
+OUT:
+ver 1.0.1
+tasks ok
+[]
+
+ERR:
+
+RC=0

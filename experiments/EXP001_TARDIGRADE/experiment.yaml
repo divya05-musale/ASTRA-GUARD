@@ -1,0 +1,19 @@
+experiment_id: EXP001
+experiment_name: Tardigrade Sample Observation
+short_name: TARDIGRADE
+domain: Biological Science
+environment: Microgravity
+version: "1.0"
+status: active
+protocol_type: synthetic
+reference_type: public_research_theme
+owner: ASTRA-GUARD
+orientation_agnostic: true
+manual_confirmation_allowed: true
+description: >
+  Synthetic ASTRA-GUARD experimental protocol inspired by publicly
+  described Indian microgravity research themes involving tardigrade
+  biological research. The protocol steps are created for prototype
+  development and are not an official ISRO flight procedure or
+  proprietary operational protocol.
+

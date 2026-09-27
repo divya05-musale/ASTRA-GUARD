@@ -1,0 +1,9 @@
+OUT:
+has YOLO: True
+
+ERR:
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+AttributeError: module 'mediapipe' has no attribute 'solutions'
+
+RC=1

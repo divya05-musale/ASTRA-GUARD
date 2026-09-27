@@ -1,0 +1,16 @@
+STDOUT:
+INITIAL: S001 CHECK_EQUIPMENT (complete=False)
+CORRECT S001: event=CHECK_EQUIPMENT/experiment_container/conf=0.95 -> CORRECT step=S001 next=S002 dev=None | Equipment check completed. Proceed to retrieve the sample. | state=S002 complete=False
+WRONG OBJECT @S002: event=RETRIEVE_SAMPLE/wrong_sample/conf=0.95 -> DEVIATION step=S002 next=S002 dev=WRONG_OBJECT | Wrong object detected. Please select the biological sample. | state=S002 complete=False
+RECOVERY S002: event=RETRIEVE_SAMPLE/biological_sample/conf=0.95 -> CORRECT step=S002 next=S003 dev=RECOVERED | Sample retrieved. Proceed to open the sample chamber. | state=S003 complete=False
+LOW CONF @S003: event=OPEN_CONTAINER/sample_chamber/conf=0.5 -> UNCERTAIN step=S003 next=S003 dev=LOW_CONFIDENCE | Detection confidence is low. Please repeat or hold the action for verification. | state=S003 complete=False
+CORRECT S003: event=OPEN_CONTAINER/sample_chamber/conf=0.95 -> CORRECT step=S003 next=S004 dev=None | Sample chamber opened. Proceed to transfer the sample. | state=S004 complete=False
+CORRECT S004: event=TRANSFER_SAMPLE/sample_chamber/conf=0.95 -> CORRECT step=S004 next=S005 dev=None | Sample transferred. Proceed to start the experiment. | state=S005 complete=False
+CORRECT S005: event=START_EXPERIMENT/experiment_controller/conf=0.95 -> CORRECT step=S005 next=S006 dev=None | Experiment started. Proceed to record the result. | state=S006 complete=False
+CORRECT S006: event=RECORD_RESULT/observation_interface/conf=0.95 -> CORRECT step=S006 next=S007 dev=None | Result recorded. Proceed to secure the sample. | state=S007 complete=False
+CORRECT S007: event=SECURE_SAMPLE/sample_chamber/conf=0.95 -> CORRECT step=S007 next=S008 dev=None | Sample secured. Proceed to complete the experiment. | state=S008 complete=False
+FINAL S008: event=COMPLETE_EXPERIMENT/experiment_controller/conf=0.95 -> COMPLETED step=S008 next=None dev=None | Experiment completed successfully. | state=S008 complete=True
+
+STDERR:
+
+RC=0

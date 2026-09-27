@@ -1,0 +1,41 @@
+objects:
+  - object_id: session_started
+    name: Started experiment session
+    type: session_action
+    criticality: high
+  - object_id: plant_tray
+    name: Plant tray
+    type: aruco_marker
+    marker_id: 10
+    criticality: high
+  - object_id: plant
+    name: Plant
+    type: aruco_marker
+    marker_id: 11
+    criticality: high
+  - object_id: watering_tool
+    name: Watering bottle or dropper
+    type: aruco_marker
+    marker_id: 12
+    criticality: high
+  - object_id: simulated_watering
+    name: Simulated watering proximity event
+    type: derived_marker_and_hand_condition
+    criticality: high
+    description: Marker 12 near marker 11 with a tracked hand; no water quantity is measured.
+  - object_id: watering_confirmed
+    name: Operator-confirmed simulated watering
+    type: operator_action
+    criticality: high
+  - object_id: evidence_capture
+    name: Locally saved image evidence
+    type: local_file_action
+    criticality: high
+  - object_id: observation_saved
+    name: Locally saved observation report
+    type: local_report_action
+    criticality: high
+  - object_id: observation_complete
+    name: Operator-confirmed observation completion
+    type: operator_action
+    criticality: high

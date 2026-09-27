@@ -1,0 +1,34 @@
+objects:
+  - object_id: experiment_container
+    name: Experiment Container
+    type: container
+    criticality: high
+    description: >
+      Container holding the equipment and biological sample required
+      for the synthetic experiment.
+  - object_id: biological_sample
+    name: Biological Sample
+    type: sample
+    criticality: high
+    description: >
+      Synthetic representation of the biological sample used by
+      the experiment.
+  - object_id: sample_chamber
+    name: Sample Chamber
+    type: container
+    criticality: high
+    description: >
+      Designated chamber used for handling and securing the sample.
+  - object_id: experiment_controller
+    name: Experiment Controller
+    type: equipment
+    criticality: high
+    description: >
+      Control interface used to start and complete the experiment.
+  - object_id: observation_interface
+    name: Observation Interface
+    type: interface
+    criticality: medium
+    description: >
+      Interface used to record experimental observations.
+

@@ -1,0 +1,10 @@
+session_id,event_id,timestamp,step_id,activity,object,confidence,orientation,deviation_type,status,expected_activity,expected_object,source,guidance
+SIM-005,EVT-002,2026-01-01T11:06:42,S002,RETRIEVE_SAMPLE,wrong_sample,0.95,0,WRONG_OBJECT,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Wrong object detected. Please select the biological sample.
+SIM-006,EVT-002,2026-01-01T11:23:22,S002,START_EXPERIMENT,experiment_controller,0.95,0,PREMATURE_ACTION,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Wrong object detected. Please select the biological sample.
+SIM-007,EVT-002,2026-01-01T11:40:02,S002,TRANSFER_SAMPLE,sample_chamber,0.95,0,SKIPPED_STEP,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Wrong object detected. Please select the biological sample.
+SIM-008,EVT-002,2026-01-01T11:56:42,S002,CHECK_EQUIPMENT,experiment_container,0.95,0,REPEATED_STEP,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Deviation (REPEATED_STEP). Expected RETRIEVE_SAMPLE with biological_sample.
+SIM-009,EVT-002,2026-01-01T12:13:22,S002,START_EXPERIMENT,experiment_controller,0.95,0,PREMATURE_ACTION,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Wrong object detected. Please select the biological sample.
+SIM-010,EVT-002,2026-01-01T12:30:02,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,TIMEOUT,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Step timeout exceeded. Please repeat the current step.
+SIM-011,EVT-002,2026-01-01T12:46:42,S002,RETRIEVE_SAMPLE,biological_sample,0.5,0,LOW_CONFIDENCE,UNCERTAIN,RETRIEVE_SAMPLE,biological_sample,synthetic,Detection confidence is low. Please repeat or hold the action for verification.
+SIM-012,EVT-002,2026-01-01T13:03:22,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,INVALID_BRANCH,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Invalid branch detected. Please follow the expected protocol sequence.
+SIM-013,EVT-002,2026-01-01T13:20:02,S002,RETRIEVE_SAMPLE,wrong_sample,0.95,0,WRONG_OBJECT,DEVIATION,RETRIEVE_SAMPLE,biological_sample,synthetic,Wrong object detected. Please select the biological sample.

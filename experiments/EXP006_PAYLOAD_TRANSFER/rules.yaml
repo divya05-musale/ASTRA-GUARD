@@ -1,0 +1,86 @@
+rules:
+  - rule_id: P001_ADVANCE
+    experiment_id: EXP006
+    step_id: S001
+    result: ADVANCE
+    guidance: Rack-open marker detected. Confirm the rack remains open.
+  - rule_id: P001_UNCERTAIN
+    experiment_id: EXP006
+    step_id: S001
+    result: UNCERTAIN
+    guidance: Rack-open state is not visible. Open the rack and show marker 13.
+  - rule_id: P002_ADVANCE
+    experiment_id: EXP006
+    step_id: S002
+    result: ADVANCE
+    guidance: Rack-open state confirmed. Place the red box in Zone A.
+  - rule_id: P002_UNCERTAIN
+    experiment_id: EXP006
+    step_id: S002
+    result: UNCERTAIN
+    guidance: Keep marker 13 visible so the open state can be verified.
+  - rule_id: P003_ADVANCE
+    experiment_id: EXP006
+    step_id: S003
+    result: ADVANCE
+    guidance: Red box held fully in Zone A for one second. Place the yellow box in Zone B.
+  - rule_id: P003_UNCERTAIN
+    experiment_id: EXP006
+    step_id: S003
+    result: UNCERTAIN
+    guidance: Red-box placement is not yet verified. Hold it fully inside Zone A for one second.
+  - rule_id: P003_DEVIATION
+    experiment_id: EXP006
+    step_id: S003
+    result: DEVIATION
+    guidance: Red box is outside Zone A. Move the whole box inside Zone A and hold for one second.
+  - rule_id: P004_ADVANCE
+    experiment_id: EXP006
+    step_id: S004
+    result: ADVANCE
+    guidance: Yellow box held fully in Zone B for one second. Verify both boxes.
+  - rule_id: P004_UNCERTAIN
+    experiment_id: EXP006
+    step_id: S004
+    result: UNCERTAIN
+    guidance: Yellow-box placement is not yet verified. Hold it fully inside Zone B for one second.
+  - rule_id: P004_DEVIATION
+    experiment_id: EXP006
+    step_id: S004
+    result: DEVIATION
+    guidance: Yellow box is outside Zone B. Move the whole box inside Zone B and hold for one second.
+  - rule_id: P005_ADVANCE
+    experiment_id: EXP006
+    step_id: S005
+    result: ADVANCE
+    guidance: Both boxes are visible and correctly placed. Close the rack.
+  - rule_id: P005_UNCERTAIN
+    experiment_id: EXP006
+    step_id: S005
+    result: UNCERTAIN
+    guidance: Both boxes are not yet verified. Keep both fully visible in their assigned zones.
+  - rule_id: P006_ADVANCE
+    experiment_id: EXP006
+    step_id: S006
+    result: ADVANCE
+    guidance: Rack-closed marker detected. Verify the rack is closed.
+  - rule_id: P006_UNCERTAIN
+    experiment_id: EXP006
+    step_id: S006
+    result: UNCERTAIN
+    guidance: Rack-closed state is not visible. Close the rack and show marker 14.
+  - rule_id: P007_ADVANCE
+    experiment_id: EXP006
+    step_id: S007
+    result: ADVANCE
+    guidance: Rack closed. Explicitly mark the transfer complete.
+  - rule_id: P007_UNCERTAIN
+    experiment_id: EXP006
+    step_id: S007
+    result: UNCERTAIN
+    guidance: Keep marker 14 visible so the closed state can be verified.
+  - rule_id: P008_ADVANCE
+    experiment_id: EXP006
+    step_id: S008
+    result: ADVANCE
+    guidance: Payload transfer session complete.

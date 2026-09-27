@@ -1,0 +1,17 @@
+activities:
+  - activity_id: OPEN_RACK
+    name: Open rack
+  - activity_id: CONFIRM_RACK_OPEN
+    name: Confirm rack open
+  - activity_id: PLACE_RED_BOX
+    name: Place red box in Zone A
+  - activity_id: PLACE_YELLOW_BOX
+    name: Place yellow box in Zone B
+  - activity_id: VERIFY_PAYLOAD
+    name: Verify payload placement
+  - activity_id: CLOSE_RACK
+    name: Close rack
+  - activity_id: CONFIRM_RACK_CLOSED
+    name: Confirm rack closed
+  - activity_id: COMPLETE_TRANSFER
+    name: Mark transfer complete

@@ -1,0 +1,103 @@
+{
+  "experiment_id": "EXP001",
+  "experiment_name": "Tardigrade Sample Observation",
+  "input_source": "webcam",
+  "protocol": {
+    "experiment": {
+      "experiment_id": "EXP001",
+      "experiment_name": "Tardigrade Sample Observation",
+      "short_name": "TARDIGRADE",
+      "domain": "Biological Science",
+      "environment": "Microgravity",
+      "version": "1.0",
+      "status": "active",
+      "protocol_type": "synthetic",
+      "reference_type": "public_research_theme",
+      "owner": "ASTRA-GUARD",
+      "orientation_agnostic": true,
+      "manual_confirmation_allowed": true,
+      "description": "Synthetic ASTRA-GUARD experimental protocol inspired by publicly described Indian microgravity research themes involving tardigrade biological research. The protocol steps are created for prototype development and are not an official ISRO flight procedure or proprietary operational protocol.\n"
+    },
+    "steps": [
+      {
+        "step_id": "S001",
+        "order": 1,
+        "activity": "CHECK_EQUIPMENT",
+        "expected_object": "experiment_container",
+        "required": true,
+        "timeout_sec": 20,
+        "description": "Verify the experiment container and required equipment before beginning the synthetic experimental sequence.\n"
+      },
+      {
+        "step_id": "S002",
+        "order": 2,
+        "activity": "RETRIEVE_SAMPLE",
+        "expected_object": "biological_sample",
+        "required": true,
+        "timeout_sec": 30,
+        "description": "Retrieve the biological sample from the experiment container.\n"
+      },
+      {
+        "step_id": "S003",
+        "order": 3,
+        "activity": "OPEN_CONTAINER",
+        "expected_object": "sample_chamber",
+        "required": true,
+        "timeout_sec": 30,
+        "description": "Open the sample chamber before transferring the biological sample.\n"
+      },
+      {
+        "step_id": "S004",
+        "order": 4,
+        "activity": "TRANSFER_SAMPLE",
+        "expected_object": "sample_chamber",
+        "required": true,
+        "timeout_sec": 40,
+        "description": "Transfer the biological sample into the designated sample chamber.\n"
+      },
+      {
+        "step_id": "S005",
+        "order": 5,
+        "activity": "START_EXPERIMENT",
+        "expected_object": "experiment_controller",
+        "required": true,
+        "timeout_sec": 20,
+        "description": "Start the synthetic experiment using the experiment controller.\n"
+      },
+      {
+        "step_id": "S006",
+        "order": 6,
+        "activity": "RECORD_RESULT",
+        "expected_object": "observation_interface",
+        "required": true,
+        "timeout_sec": 60,
+        "description": "Record the observed experimental result using the observation interface.\n"
+      },
+      {
+        "step_id": "S007",
+        "order": 7,
+        "activity": "SECURE_SAMPLE",
+        "expected_object": "sample_chamber",
+        "required": true,
+        "timeout_sec": 30,
+        "description": "Secure the sample chamber after recording the observation.\n"
+      },
+      {
+        "step_id": "S008",
+        "order": 8,
+        "activity": "COMPLETE_EXPERIMENT",
+        "expected_object": "experiment_controller",
+        "required": true,
+        "timeout_sec": 20,
+        "description": "Complete the synthetic experiment using the experiment controller.\n"
+      }
+    ]
+  },
+  "evidence": [],
+  "session_id": "b964dfc796724b52be95d4283dc766ef",
+  "started_at": "2026-09-27T11:46:58+00:00",
+  "completed_at": "2026-09-27T11:56:35+00:00",
+  "status": "INTERRUPTED",
+  "event_count": 35,
+  "interruption_reason": "backend_restarted"
+}

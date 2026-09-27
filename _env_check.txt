@@ -1,0 +1,53 @@
+$ C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe --version
+RC=0
+OUT:
+Python 3.12.10
+
+ERR:
+
+$ C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe -m pip show ultralytics
+RC=1
+OUT:
+
+ERR:
+WARNING: Package(s) not found: ultralytics
+
+$ C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe -m pip show mediapipe
+RC=1
+OUT:
+
+ERR:
+WARNING: Package(s) not found: mediapipe
+
+$ C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe -m pip show opencv-python
+RC=0
+OUT:
+Name: opencv-python
+Version: 5.0.0.93
+Summary: Wrapper package for OpenCV python bindings.
+Home-page: https://github.com/opencv/opencv-python
+Author: 
+Author-email: 
+License: Apache 2.0
+Location: C:\Users\HP\AppData\Local\Programs\Python\Python312\Lib\site-packages
+Requires: numpy
+Required-by: 
+
+ERR:
+
+$ C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe -m pip show numpy
+RC=0
+OUT:
+Name: numpy
+Version: 2.5.3
+Summary: Fundamental package for array computing in Python
+Home-page: https://numpy.org
+Author: Travis E. Oliphant et al.
+Author-email: 
+License-Expression: BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0
+Location: C:\Users\HP\AppData\Local\Programs\Python\Python312\Lib\site-packages
+Requires: 
+Required-by: opencv-python, scikit-learn, scipy
+
+ERR:
+

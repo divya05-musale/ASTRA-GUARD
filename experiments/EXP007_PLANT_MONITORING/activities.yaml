@@ -1,0 +1,19 @@
+activities:
+  - activity_id: START_SESSION
+    name: Start experiment session
+  - activity_id: IDENTIFY_TRAY
+    name: Identify plant tray
+  - activity_id: IDENTIFY_PLANT
+    name: Identify plant
+  - activity_id: IDENTIFY_WATERING_TOOL
+    name: Identify watering tool
+  - activity_id: SIMULATE_WATERING
+    name: Perform simulated watering action
+  - activity_id: CONFIRM_WATERING
+    name: Confirm simulated watering
+  - activity_id: CAPTURE_EVIDENCE
+    name: Capture evidence
+  - activity_id: SAVE_OBSERVATION
+    name: Save observation and local report
+  - activity_id: CONFIRM_OBSERVATION_COMPLETE
+    name: Confirm observation complete

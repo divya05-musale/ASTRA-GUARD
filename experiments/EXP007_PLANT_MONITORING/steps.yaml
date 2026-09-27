@@ -1,0 +1,67 @@
+steps:
+  - step_id: S001
+    order: 1
+    activity: START_SESSION
+    expected_object: session_started
+    required: true
+    description: Starting this local session records completion of this step.
+  - step_id: S002
+    order: 2
+    activity: IDENTIFY_TRAY
+    expected_object: plant_tray
+    required: true
+    manual_confirmation_allowed: true
+    uncertain_on_no_detection: true
+    description: Identify the plant tray with ArUco marker 10 or explicitly confirm manually.
+  - step_id: S003
+    order: 3
+    activity: IDENTIFY_PLANT
+    expected_object: plant
+    required: true
+    manual_confirmation_allowed: true
+    uncertain_on_no_detection: true
+    description: Identify the plant with ArUco marker 11 or explicitly confirm manually.
+  - step_id: S004
+    order: 4
+    activity: IDENTIFY_WATERING_TOOL
+    expected_object: watering_tool
+    required: true
+    uncertain_on_no_detection: true
+    description: Identify the bottle or dropper using ArUco marker 12.
+  - step_id: S005
+    order: 5
+    activity: SIMULATE_WATERING
+    expected_object: simulated_watering
+    required: true
+    uncertain_on_no_detection: true
+    description: Show marker 12 near marker 11 with a tracked hand to record a simulated watering interaction. No water volume is measured.
+  - step_id: S006
+    order: 6
+    activity: CONFIRM_WATERING
+    expected_object: watering_confirmed
+    required: true
+    manual_confirmation_allowed: true
+    uncertain_on_no_detection: true
+    description: Explicitly confirm the simulated watering action.
+  - step_id: S007
+    order: 7
+    activity: CAPTURE_EVIDENCE
+    expected_object: evidence_capture
+    required: true
+    session_action: capture_evidence
+    description: Capture and save the current local camera frame as session evidence.
+  - step_id: S008
+    order: 8
+    activity: SAVE_OBSERVATION
+    expected_object: observation_saved
+    required: true
+    session_action: save_observation
+    description: Save the observation metadata and a local JSON report.
+  - step_id: S009
+    order: 9
+    activity: CONFIRM_OBSERVATION_COMPLETE
+    expected_object: observation_complete
+    required: true
+    manual_confirmation_allowed: true
+    uncertain_on_no_detection: true
+    description: Explicitly confirm the local observation is complete.

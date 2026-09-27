@@ -1,0 +1,151 @@
+{"timestamp": "2026-09-27T14:35:49.061234", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:35:49.061234", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:35:49.061234", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 20}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 30}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 40}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 50}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 60}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 70}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 80}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 90}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 100}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 110}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 120}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 130}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 140}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 150}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 160}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 170}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 180}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 190}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 200}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 210}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 220}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 230}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 240}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 250}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 260}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 270}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 280}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 290}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 300}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 310}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 320}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 330}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 340}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 350}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 360}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 370}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 380}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 390}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 400}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 410}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 420}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 430}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 440}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 450}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 460}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 470}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 480}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 490}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 500}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 510}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 520}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 530}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 540}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 550}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 560}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 570}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 580}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 590}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 600}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 610}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 620}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 630}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 640}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 650}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 660}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 670}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 680}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 690}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 700}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 710}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 720}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 730}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 740}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 750}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 760}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 770}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 780}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 790}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 800}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 810}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 820}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 830}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 840}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 850}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 860}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 870}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 880}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 890}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 900}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 910}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 920}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:35:49.061234", "repeat_count": 921}
+{"timestamp": "2026-09-27T14:50:05.782327", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:50:05.782327", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.49584777832031257, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.7747621536254883, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "WRONG_OBJECT", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "CHECK_EQUIPMENT", "detected_object": "experiment_controller", "guidance": "Wrong action detected. experiment controller is not expected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:50:05.782327", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.49584777832031257, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.7747621536254883, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}}}
+{"timestamp": "2026-09-27T14:50:10.119750", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:50:10.119750", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:50:10.119750", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:50:10.119750", "repeat_count": 8}
+{"timestamp": "2026-09-27T14:50:39.517892", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:50:39.517892", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.38296821594238284, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.5983878374099731, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "WRONG_OBJECT", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "CHECK_EQUIPMENT", "detected_object": "experiment_controller", "guidance": "Wrong action detected. experiment controller is not expected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:50:39.517892", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.38296821594238284, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.5983878374099731, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}}}
+{"timestamp": "2026-09-27T14:50:41.917697", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:50:41.917697", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:50:41.917697", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:50:41.917697", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:50:41.917697", "repeat_count": 20}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:50:41.917697", "repeat_count": 30}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:50:41.917697", "repeat_count": 40}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:50:41.917697", "repeat_count": 50}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:50:41.917697", "repeat_count": 53}
+{"timestamp": "2026-09-27T14:53:14.050632", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:53:14.050632", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.28428665161132816, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.4441978931427002, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "WRONG_OBJECT", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "CHECK_EQUIPMENT", "detected_object": "experiment_controller", "guidance": "Wrong action detected. experiment controller is not expected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:53:14.050632", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.28428665161132816, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.4441978931427002, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}}}
+{"timestamp": "2026-09-27T14:53:17.536744", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:53:17.536744", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:53:17.536744", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:53:17.536744", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:53:17.536744", "repeat_count": 11}
+{"timestamp": "2026-09-27T14:53:42.923341", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:53:42.923341", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.3212836837768555, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.5020057559013367, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "WRONG_OBJECT", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "CHECK_EQUIPMENT", "detected_object": "experiment_controller", "guidance": "Wrong action detected. experiment controller is not expected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:53:42.923341", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.3212836837768555, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.5020057559013367, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}}}
+{"timestamp": "2026-09-27T14:53:46.212683", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:53:46.212683", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:53:46.212683", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:53:46.212683", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:53:46.212683", "repeat_count": 17}
+{"timestamp": "2026-09-27T14:54:29.589735", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:54:29.589735", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.31759202957153326, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.49623754620552063, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "WRONG_OBJECT", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "CHECK_EQUIPMENT", "detected_object": "experiment_controller", "guidance": "Wrong action detected. experiment controller is not expected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:54:29.589735", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.31759202957153326, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.49623754620552063, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}}}
+{"timestamp": "2026-09-27T14:54:31.369006", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:54:31.369006", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:54:31.369006", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:54:31.369006", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:54:31.369006", "repeat_count": 13}
+{"timestamp": "2026-09-27T14:55:06.003389", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:55:06.003389", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.6485654056072235, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": true, "hand_confidence": 0.9970821142196655, "object_confidence": 0.41622093319892883, "hand_object_distance": 12.058726968065079, "activity_reason": "object_hand_interaction"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "WRONG_OBJECT", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "CHECK_EQUIPMENT", "detected_object": "experiment_controller", "guidance": "Wrong action detected. experiment controller is not expected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:55:06.003389", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.6485654056072235, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": true, "hand_confidence": 0.9970821142196655, "object_confidence": 0.41622093319892883, "hand_object_distance": 12.058726968065079, "activity_reason": "object_hand_interaction"}}}}
+{"timestamp": "2026-09-27T14:55:09.837650", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:55:09.837650", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:55:09.837650", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:55:09.837650", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:55:09.837650", "repeat_count": 20}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:55:09.837650", "repeat_count": 27}
+{"timestamp": "2026-09-27T14:56:20.031888", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:56:20.031888", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.26048357009887696, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.40700557827949524, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "WRONG_OBJECT", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "CHECK_EQUIPMENT", "detected_object": "experiment_controller", "guidance": "Wrong action detected. experiment controller is not expected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:56:20.031888", "activity": "CHECK_EQUIPMENT", "object": "experiment_controller", "confidence": 0.26048357009887696, "source": "camera", "raw_object": "cell phone", "metadata": {"step_id": "S001", "hand_interaction": false, "hand_confidence": 0.0, "object_confidence": 0.40700557827949524, "hand_object_distance": null, "activity_reason": "object_detected_without_hand_interaction"}}}}
+{"timestamp": "2026-09-27T14:56:22.545779", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T14:56:22.545779", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T14:56:22.545779", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 20}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 30}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 40}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 50}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 60}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 70}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 80}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 90}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 100}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 110}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 120}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 130}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 140}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 150}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 160}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 170}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 180}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 190}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 200}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 210}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 220}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 230}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 240}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 250}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 260}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T14:56:22.545779", "repeat_count": 270}

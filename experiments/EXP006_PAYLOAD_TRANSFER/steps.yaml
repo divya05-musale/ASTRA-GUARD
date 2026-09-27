@@ -1,0 +1,58 @@
+steps:
+  - step_id: S001
+    order: 1
+    activity: OPEN_RACK
+    expected_object: rack_opened
+    required: true
+    description: Open the rack; ArUco marker 13 must be visible in its open-state position.
+    uncertain_on_no_detection: true
+  - step_id: S002
+    order: 2
+    activity: CONFIRM_RACK_OPEN
+    expected_object: rack_opened
+    required: true
+    description: Verify the rack-open marker remains visible.
+    uncertain_on_no_detection: true
+  - step_id: S003
+    order: 3
+    activity: PLACE_RED_BOX
+    expected_object: red_box
+    required: true
+    description: Keep the entire detected red box inside configured Zone A for one second.
+    uncertain_on_no_detection: true
+  - step_id: S004
+    order: 4
+    activity: PLACE_YELLOW_BOX
+    expected_object: yellow_box
+    required: true
+    description: Keep the entire detected yellow box inside configured Zone B for one second.
+    uncertain_on_no_detection: true
+  - step_id: S005
+    order: 5
+    activity: VERIFY_PAYLOAD
+    expected_object: both_boxes_verified
+    required: true
+    description: Verify both boxes are visible, in their assigned zones, and held for one second.
+    uncertain_on_no_detection: true
+  - step_id: S006
+    order: 6
+    activity: CLOSE_RACK
+    expected_object: rack_closed
+    required: true
+    description: Close the rack; ArUco marker 14 must be visible in its closed-state position.
+    uncertain_on_no_detection: true
+  - step_id: S007
+    order: 7
+    activity: CONFIRM_RACK_CLOSED
+    expected_object: rack_closed
+    required: true
+    description: Verify the rack-closed marker remains visible.
+    uncertain_on_no_detection: true
+  - step_id: S008
+    order: 8
+    activity: COMPLETE_TRANSFER
+    expected_object: transfer_complete
+    required: true
+    manual_confirmation_allowed: true
+    uncertain_on_no_detection: true
+    description: Explicitly mark the validated transfer complete.

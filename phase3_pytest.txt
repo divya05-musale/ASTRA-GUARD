@@ -1,0 +1,36 @@
+STDOUT:
+============================= test session starts =============================
+platform win32 -- Python 3.12.10, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\HP\AppData\Local\Programs\Python\Python312\python.exe
+cachedir: .pytest_cache
+rootdir: c:\Users\HP\Desktop\ASTRA-GUARD
+collecting ... collected 23 items
+
+tests/mission/test_decision_engine.py::test_correct_event_advances_state PASSED [  4%]
+tests/mission/test_decision_engine.py::test_wrong_object_does_not_advance PASSED [  8%]
+tests/mission/test_decision_engine.py::test_wrong_activity_does_not_advance PASSED [ 13%]
+tests/mission/test_decision_engine.py::test_low_confidence_does_not_advance PASSED [ 17%]
+tests/mission/test_decision_engine.py::test_final_correct_event_returns_completed PASSED [ 21%]
+tests/mission/test_deviation_detector.py::test_wrong_object PASSED       [ 26%]
+tests/mission/test_deviation_detector.py::test_wrong_sequence PASSED     [ 30%]
+tests/mission/test_deviation_detector.py::test_low_confidence PASSED     [ 34%]
+tests/mission/test_deviation_detector.py::test_unknown_action PASSED     [ 39%]
+tests/mission/test_deviation_detector.py::test_recovery_after_deviation PASSED [ 43%]
+tests/mission/test_sequence_validator.py::test_correct_event_is_valid PASSED [ 47%]
+tests/mission/test_sequence_validator.py::test_wrong_object PASSED       [ 52%]
+tests/mission/test_sequence_validator.py::test_wrong_activity PASSED     [ 56%]
+tests/mission/test_sequence_validator.py::test_low_confidence PASSED     [ 60%]
+tests/mission/test_sequence_validator.py::test_unknown_activity PASSED   [ 65%]
+tests/mission/test_state_machine.py::test_initial_state_is_s001 PASSED   [ 69%]
+tests/mission/test_state_machine.py::test_current_step_returns_s001 PASSED [ 73%]
+tests/mission/test_state_machine.py::test_advance_moves_s001_to_s002 PASSED [ 78%]
+tests/mission/test_state_machine.py::test_advance_moves_sequentially PASSED [ 82%]
+tests/mission/test_state_machine.py::test_no_step_skipped PASSED         [ 86%]
+tests/mission/test_state_machine.py::test_reset_returns_to_s001 PASSED   [ 91%]
+tests/mission/test_state_machine.py::test_final_step_reaches_completed PASSED [ 95%]
+tests/mission/test_state_machine.py::test_cannot_advance_beyond_final PASSED [100%]
+
+============================= 23 passed in 1.28s ==============================
+
+STDERR:
+
+RC=0

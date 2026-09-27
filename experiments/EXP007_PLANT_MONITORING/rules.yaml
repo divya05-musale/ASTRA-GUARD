@@ -1,0 +1,66 @@
+rules:
+  - rule_id: T001_ADVANCE
+    experiment_id: EXP007
+    step_id: S001
+    result: ADVANCE
+    guidance: Session started. Identify the tray with marker 10 or confirm it manually.
+  - rule_id: T002_ADVANCE
+    experiment_id: EXP007
+    step_id: S002
+    result: ADVANCE
+    guidance: Plant tray identified. Identify the plant with marker 11 or confirm it manually.
+  - rule_id: T002_UNCERTAIN
+    experiment_id: EXP007
+    step_id: S002
+    result: UNCERTAIN
+    guidance: Marker 10 was not confidently detected. Show it clearly or confirm the tray manually.
+  - rule_id: T003_ADVANCE
+    experiment_id: EXP007
+    step_id: S003
+    result: ADVANCE
+    guidance: Plant identified. Show the watering bottle or dropper with marker 12.
+  - rule_id: T003_UNCERTAIN
+    experiment_id: EXP007
+    step_id: S003
+    result: UNCERTAIN
+    guidance: Marker 11 was not confidently detected. Show it clearly or confirm the plant manually.
+  - rule_id: T004_ADVANCE
+    experiment_id: EXP007
+    step_id: S004
+    result: ADVANCE
+    guidance: Watering tool identified. Show its marker near the plant with a tracked hand for simulated watering.
+  - rule_id: T004_UNCERTAIN
+    experiment_id: EXP007
+    step_id: S004
+    result: UNCERTAIN
+    guidance: Marker 12 was not detected. Show the watering bottle or dropper marker.
+  - rule_id: T005_ADVANCE
+    experiment_id: EXP007
+    step_id: S005
+    result: ADVANCE
+    guidance: Simulated watering interaction detected. Confirm it manually.
+  - rule_id: T005_UNCERTAIN
+    experiment_id: EXP007
+    step_id: S005
+    result: UNCERTAIN
+    guidance: Simulated watering was not detected. Bring marker 12 near marker 11 and show the tracked hand.
+  - rule_id: T006_ADVANCE
+    experiment_id: EXP007
+    step_id: S006
+    result: ADVANCE
+    guidance: Watering confirmation recorded. Capture local evidence.
+  - rule_id: T007_ADVANCE
+    experiment_id: EXP007
+    step_id: S007
+    result: ADVANCE
+    guidance: Evidence saved locally. Save the observation report.
+  - rule_id: T008_ADVANCE
+    experiment_id: EXP007
+    step_id: S008
+    result: ADVANCE
+    guidance: Observation report saved locally. Confirm the observation is complete.
+  - rule_id: T009_ADVANCE
+    experiment_id: EXP007
+    step_id: S009
+    result: ADVANCE
+    guidance: Observation complete. Water quantity was not measured.

@@ -1,0 +1,14 @@
+"""Events endpoint — reads real events from the mission session."""
+from typing import Any, Dict, List, Optional
+from fastapi import APIRouter, Query
+from backend.services.event_service import get_recent_events
+
+router = APIRouter()
+
+
+@router.get("/events")
+def list_events(
+    limit: Optional[int] = Query(default=None, ge=0),
+) -> List[Dict[str, Any]]:
+    return get_recent_events(limit)
+

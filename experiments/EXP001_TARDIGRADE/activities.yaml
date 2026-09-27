@@ -1,0 +1,51 @@
+activities:
+  - activity_id: CHECK_EQUIPMENT
+    name: Check Equipment
+    category: inspection
+    requires_object: true
+    description: >
+      Verify that the required experiment equipment is available
+      and correctly positioned.
+  - activity_id: RETRIEVE_SAMPLE
+    name: Retrieve Sample
+    category: handling
+    requires_object: true
+    description: >
+      Retrieve the required biological sample.
+  - activity_id: OPEN_CONTAINER
+    name: Open Container
+    category: manipulation
+    requires_object: true
+    description: >
+      Open the designated sample chamber.
+  - activity_id: TRANSFER_SAMPLE
+    name: Transfer Sample
+    category: transfer
+    requires_object: true
+    description: >
+      Transfer the biological sample into the designated chamber.
+  - activity_id: START_EXPERIMENT
+    name: Start Experiment
+    category: control
+    requires_object: true
+    description: >
+      Start the experiment using the designated controller.
+  - activity_id: RECORD_RESULT
+    name: Record Result
+    category: recording
+    requires_object: true
+    description: >
+      Record the observed experimental result.
+  - activity_id: SECURE_SAMPLE
+    name: Secure Sample
+    category: securing
+    requires_object: true
+    description: >
+      Secure the sample chamber after completing the observation.
+  - activity_id: COMPLETE_EXPERIMENT
+    name: Complete Experiment
+    category: completion
+    requires_object: true
+    description: >
+      Mark the synthetic experiment sequence as completed.
+

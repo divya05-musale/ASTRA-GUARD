@@ -1,0 +1,26 @@
+experiment:
+  experiment_id: EXP007
+  experiment_name: Plant Monitoring and Watering
+  short_name: PLANT_MONITORING
+  domain: Plant Monitoring
+  environment: Ground Simulation
+  version: "1.0"
+  status: active
+  protocol_type: configurable_demo
+  owner: ASTRA-GUARD
+  description: >
+    Marker-assisted plant observation and simulated watering. Water quantity
+    is not measured and no actual water-volume estimate is produced.
+  manual_confirmation_steps: [S002, S003, S006, S009]
+  start_action_completes_first_step: true
+  perception:
+    strategy: plant_monitoring
+    aruco_dictionary: DICT_4X4_50
+    marker_objects:
+      10: plant_tray
+      11: plant
+      12: watering_tool
+    watering:
+      max_marker_distance_normalized: 0.18
+      max_hand_distance_normalized: 0.18
+      quantity_measured: false

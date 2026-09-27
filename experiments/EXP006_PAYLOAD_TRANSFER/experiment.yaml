@@ -1,0 +1,33 @@
+experiment:
+  experiment_id: EXP006
+  experiment_name: Payload Transfer
+  short_name: PAYLOAD_TRANSFER
+  domain: Payload Operations
+  environment: Ground Simulation
+  version: "1.0"
+  status: active
+  protocol_type: configurable_demo
+  owner: ASTRA-GUARD
+  description: >
+    Eight-step payload rack transfer demonstration. Zone coordinates and rack
+    state markers are local configuration and must be calibrated for the setup.
+  manual_confirmation_steps: [S008]
+  perception:
+    strategy: payload_transfer
+    aruco_dictionary: DICT_4X4_50
+    rack_state_markers:
+      rack_opened: 13
+      rack_closed: 14
+    color_detection:
+      min_contour_area: 180
+      min_color_purity: 0.45
+      min_observation_gap_seconds: 0.50
+      required_hold_seconds: 1.0
+      red_hsv_ranges:
+        - [0, 90, 60, 12, 255, 255]
+        - [168, 90, 60, 180, 255, 255]
+      yellow_hsv_ranges:
+        - [16, 80, 70, 42, 255, 255]
+      zones:
+        zone_a: {x1: 0.04, y1: 0.12, x2: 0.48, y2: 0.96}
+        zone_b: {x1: 0.52, y1: 0.12, x2: 0.96, y2: 0.96}

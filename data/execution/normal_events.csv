@@ -1,0 +1,105 @@
+session_id,event_id,timestamp,step_id,activity,object,confidence,orientation,status,source,guidance
+SIM-001,EVT-001,2026-01-01T10:00:01,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-001,EVT-002,2026-01-01T10:00:02,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-001,EVT-003,2026-01-01T10:00:03,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-001,EVT-004,2026-01-01T10:00:04,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-001,EVT-005,2026-01-01T10:00:05,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-001,EVT-006,2026-01-01T10:00:06,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-001,EVT-007,2026-01-01T10:00:07,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-001,EVT-008,2026-01-01T10:00:08,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-002,EVT-001,2026-01-01T10:16:41,S001,CHECK_EQUIPMENT,experiment_container,0.95,90,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-002,EVT-002,2026-01-01T10:16:42,S002,RETRIEVE_SAMPLE,biological_sample,0.95,90,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-002,EVT-003,2026-01-01T10:16:43,S003,OPEN_CONTAINER,sample_chamber,0.95,90,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-002,EVT-004,2026-01-01T10:16:44,S004,TRANSFER_SAMPLE,sample_chamber,0.95,90,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-002,EVT-005,2026-01-01T10:16:45,S005,START_EXPERIMENT,experiment_controller,0.95,90,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-002,EVT-006,2026-01-01T10:16:46,S006,RECORD_RESULT,observation_interface,0.95,90,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-002,EVT-007,2026-01-01T10:16:47,S007,SECURE_SAMPLE,sample_chamber,0.95,90,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-002,EVT-008,2026-01-01T10:16:48,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,90,COMPLETED,synthetic,Experiment completed successfully.
+SIM-003,EVT-001,2026-01-01T10:33:21,S001,CHECK_EQUIPMENT,experiment_container,0.95,180,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-003,EVT-002,2026-01-01T10:33:22,S002,RETRIEVE_SAMPLE,biological_sample,0.95,180,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-003,EVT-003,2026-01-01T10:33:23,S003,OPEN_CONTAINER,sample_chamber,0.95,180,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-003,EVT-004,2026-01-01T10:33:24,S004,TRANSFER_SAMPLE,sample_chamber,0.95,180,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-003,EVT-005,2026-01-01T10:33:25,S005,START_EXPERIMENT,experiment_controller,0.95,180,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-003,EVT-006,2026-01-01T10:33:26,S006,RECORD_RESULT,observation_interface,0.95,180,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-003,EVT-007,2026-01-01T10:33:27,S007,SECURE_SAMPLE,sample_chamber,0.95,180,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-003,EVT-008,2026-01-01T10:33:28,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,180,COMPLETED,synthetic,Experiment completed successfully.
+SIM-004,EVT-001,2026-01-01T10:50:01,S001,CHECK_EQUIPMENT,experiment_container,0.95,270,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-004,EVT-002,2026-01-01T10:50:02,S002,RETRIEVE_SAMPLE,biological_sample,0.95,270,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-004,EVT-003,2026-01-01T10:50:03,S003,OPEN_CONTAINER,sample_chamber,0.95,270,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-004,EVT-004,2026-01-01T10:50:04,S004,TRANSFER_SAMPLE,sample_chamber,0.95,270,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-004,EVT-005,2026-01-01T10:50:05,S005,START_EXPERIMENT,experiment_controller,0.95,270,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-004,EVT-006,2026-01-01T10:50:06,S006,RECORD_RESULT,observation_interface,0.95,270,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-004,EVT-007,2026-01-01T10:50:07,S007,SECURE_SAMPLE,sample_chamber,0.95,270,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-004,EVT-008,2026-01-01T10:50:08,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,270,COMPLETED,synthetic,Experiment completed successfully.
+SIM-005,EVT-001,2026-01-01T11:06:41,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-005,EVT-003,2026-01-01T11:06:43,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-005,EVT-004,2026-01-01T11:06:44,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-005,EVT-005,2026-01-01T11:06:45,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-005,EVT-006,2026-01-01T11:06:46,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-005,EVT-007,2026-01-01T11:06:47,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-005,EVT-008,2026-01-01T11:06:48,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-005,EVT-009,2026-01-01T11:06:49,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-006,EVT-001,2026-01-01T11:23:21,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-006,EVT-003,2026-01-01T11:23:23,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-006,EVT-004,2026-01-01T11:23:24,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-006,EVT-005,2026-01-01T11:23:25,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-006,EVT-006,2026-01-01T11:23:26,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-006,EVT-007,2026-01-01T11:23:27,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-006,EVT-008,2026-01-01T11:23:28,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-006,EVT-009,2026-01-01T11:23:29,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-007,EVT-001,2026-01-01T11:40:01,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-007,EVT-003,2026-01-01T11:40:03,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-007,EVT-004,2026-01-01T11:40:04,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-007,EVT-005,2026-01-01T11:40:05,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-007,EVT-006,2026-01-01T11:40:06,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-007,EVT-007,2026-01-01T11:40:07,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-007,EVT-008,2026-01-01T11:40:08,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-007,EVT-009,2026-01-01T11:40:09,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-008,EVT-001,2026-01-01T11:56:41,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-008,EVT-003,2026-01-01T11:56:43,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-008,EVT-004,2026-01-01T11:56:44,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-008,EVT-005,2026-01-01T11:56:45,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-008,EVT-006,2026-01-01T11:56:46,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-008,EVT-007,2026-01-01T11:56:47,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-008,EVT-008,2026-01-01T11:56:48,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-008,EVT-009,2026-01-01T11:56:49,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-009,EVT-001,2026-01-01T12:13:21,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-009,EVT-003,2026-01-01T12:13:23,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-009,EVT-004,2026-01-01T12:13:24,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-009,EVT-005,2026-01-01T12:13:25,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-009,EVT-006,2026-01-01T12:13:26,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-009,EVT-007,2026-01-01T12:13:27,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-009,EVT-008,2026-01-01T12:13:28,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-009,EVT-009,2026-01-01T12:13:29,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-010,EVT-001,2026-01-01T12:30:01,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-010,EVT-003,2026-01-01T12:30:03,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-010,EVT-004,2026-01-01T12:30:04,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-010,EVT-005,2026-01-01T12:30:05,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-010,EVT-006,2026-01-01T12:30:06,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-010,EVT-007,2026-01-01T12:30:07,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-010,EVT-008,2026-01-01T12:30:08,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-010,EVT-009,2026-01-01T12:30:09,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-011,EVT-001,2026-01-01T12:46:41,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-011,EVT-003,2026-01-01T12:46:43,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-011,EVT-004,2026-01-01T12:46:44,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-011,EVT-005,2026-01-01T12:46:45,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-011,EVT-006,2026-01-01T12:46:46,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-011,EVT-007,2026-01-01T12:46:47,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-011,EVT-008,2026-01-01T12:46:48,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-011,EVT-009,2026-01-01T12:46:49,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-012,EVT-001,2026-01-01T13:03:21,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-012,EVT-003,2026-01-01T13:03:23,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-012,EVT-004,2026-01-01T13:03:24,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-012,EVT-005,2026-01-01T13:03:25,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-012,EVT-006,2026-01-01T13:03:26,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-012,EVT-007,2026-01-01T13:03:27,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-012,EVT-008,2026-01-01T13:03:28,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-012,EVT-009,2026-01-01T13:03:29,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.
+SIM-013,EVT-001,2026-01-01T13:20:01,S001,CHECK_EQUIPMENT,experiment_container,0.95,0,CORRECT,synthetic,Equipment check completed. Proceed to retrieve the sample.
+SIM-013,EVT-003,2026-01-01T13:20:03,S002,RETRIEVE_SAMPLE,biological_sample,0.95,0,CORRECT,synthetic,Sample retrieved. Proceed to open the sample chamber.
+SIM-013,EVT-004,2026-01-01T13:20:04,S003,OPEN_CONTAINER,sample_chamber,0.95,0,CORRECT,synthetic,Sample chamber opened. Proceed to transfer the sample.
+SIM-013,EVT-005,2026-01-01T13:20:05,S004,TRANSFER_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample transferred. Proceed to start the experiment.
+SIM-013,EVT-006,2026-01-01T13:20:06,S005,START_EXPERIMENT,experiment_controller,0.95,0,CORRECT,synthetic,Experiment started. Proceed to record the result.
+SIM-013,EVT-007,2026-01-01T13:20:07,S006,RECORD_RESULT,observation_interface,0.95,0,CORRECT,synthetic,Result recorded. Proceed to secure the sample.
+SIM-013,EVT-008,2026-01-01T13:20:08,S007,SECURE_SAMPLE,sample_chamber,0.95,0,CORRECT,synthetic,Sample secured. Proceed to complete the experiment.
+SIM-013,EVT-009,2026-01-01T13:20:09,S008,COMPLETE_EXPERIMENT,experiment_controller,0.95,0,COMPLETED,synthetic,Experiment completed successfully.

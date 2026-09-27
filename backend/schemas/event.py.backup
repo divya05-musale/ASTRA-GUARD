@@ -1,0 +1,10 @@
+"""Event schemas (minimal)."""
+from __future__ import annotations
+from typing import Any, Dict, List
+from pydantic import BaseModel
+
+
+class EventsResponse(BaseModel):
+    events: List[Dict[str, Any]] = []
+    count: int = 0
+

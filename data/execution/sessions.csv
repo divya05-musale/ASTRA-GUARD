@@ -1,0 +1,14 @@
+session_id,experiment_id,experiment_name,scenario,start_time,end_time,status,total_events,normal_events,deviation_events,orientation,source
+SIM-001,EXP001,Tardigrade Sample Observation,correct_sequence,2026-01-01T10:00:00,2026-01-01T10:00:08,COMPLETED,8,8,0,0,synthetic
+SIM-002,EXP001,Tardigrade Sample Observation,correct_sequence,2026-01-01T10:16:40,2026-01-01T10:16:48,COMPLETED,8,8,0,90,synthetic
+SIM-003,EXP001,Tardigrade Sample Observation,correct_sequence,2026-01-01T10:33:20,2026-01-01T10:33:28,COMPLETED,8,8,0,180,synthetic
+SIM-004,EXP001,Tardigrade Sample Observation,correct_sequence,2026-01-01T10:50:00,2026-01-01T10:50:08,COMPLETED,8,8,0,270,synthetic
+SIM-005,EXP001,Tardigrade Sample Observation,wrong_object,2026-01-01T11:06:40,2026-01-01T11:06:49,COMPLETED,9,8,1,0,synthetic
+SIM-006,EXP001,Tardigrade Sample Observation,wrong_sequence,2026-01-01T11:23:20,2026-01-01T11:23:29,COMPLETED,9,8,1,0,synthetic
+SIM-007,EXP001,Tardigrade Sample Observation,skipped_step,2026-01-01T11:40:00,2026-01-01T11:40:09,COMPLETED,9,8,1,0,synthetic
+SIM-008,EXP001,Tardigrade Sample Observation,repeated_step,2026-01-01T11:56:40,2026-01-01T11:56:49,COMPLETED,9,8,1,0,synthetic
+SIM-009,EXP001,Tardigrade Sample Observation,premature_action,2026-01-01T12:13:20,2026-01-01T12:13:29,COMPLETED,9,8,1,0,synthetic
+SIM-010,EXP001,Tardigrade Sample Observation,timeout,2026-01-01T12:30:00,2026-01-01T12:30:09,COMPLETED,9,8,1,0,synthetic
+SIM-011,EXP001,Tardigrade Sample Observation,low_confidence,2026-01-01T12:46:40,2026-01-01T12:46:49,COMPLETED,9,8,1,0,synthetic
+SIM-012,EXP001,Tardigrade Sample Observation,invalid_branch,2026-01-01T13:03:20,2026-01-01T13:03:29,COMPLETED,9,8,1,0,synthetic
+SIM-013,EXP001,Tardigrade Sample Observation,recovery,2026-01-01T13:20:00,2026-01-01T13:20:09,COMPLETED,9,8,1,0,synthetic

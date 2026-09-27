@@ -1,0 +1,10 @@
+{"timestamp": "2026-09-27T16:05:11.587010", "decision_source": "automatic", "repeat_count": 1, "perception": {"timestamp": "2026-09-27T16:05:11.587010", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}, "decision": {"status": "DEVIATION", "step_id": "S001", "next_step_id": "S001", "deviation_type": "UNKNOWN_ACTION", "expected_activity": "CHECK_EQUIPMENT", "expected_object": "experiment_container", "detected_activity": "UNKNOWN", "detected_object": null, "guidance": "Unknown object detected. Please use experiment container.", "perception": {"timestamp": "2026-09-27T16:05:11.587010", "activity": "UNKNOWN", "object": null, "confidence": 0.0, "source": "camera", "raw_object": null, "metadata": {"reason": "no_supported_object_detected", "step_id": "S001"}}}}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 10}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 20}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 30}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 40}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 50}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 60}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 70}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 80}
+{"_kind": "repeat_update", "timestamp": "2026-09-27T16:05:11.587010", "repeat_count": 85}

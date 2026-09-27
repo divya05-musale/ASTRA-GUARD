@@ -1,0 +1,160 @@
+{
+  "experiment_id": "EXP006",
+  "experiment_name": "Payload Transfer",
+  "input_source": "webcam",
+  "protocol": {
+    "experiment": {
+      "experiment_id": "EXP006",
+      "experiment_name": "Payload Transfer",
+      "short_name": "PAYLOAD_TRANSFER",
+      "domain": "Payload Operations",
+      "environment": "Ground Simulation",
+      "version": "1.0",
+      "status": "active",
+      "protocol_type": "configurable_demo",
+      "owner": "ASTRA-GUARD",
+      "description": "Eight-step payload rack transfer demonstration. Zone coordinates and rack state markers are local configuration and must be calibrated for the setup.\n",
+      "manual_confirmation_steps": [
+        "S008"
+      ],
+      "perception": {
+        "strategy": "payload_transfer",
+        "aruco_dictionary": "DICT_4X4_50",
+        "rack_state_markers": {
+          "rack_opened": 13,
+          "rack_closed": 14
+        },
+        "color_detection": {
+          "min_contour_area": 180,
+          "min_color_purity": 0.45,
+          "min_observation_gap_seconds": 0.5,
+          "required_hold_seconds": 1.0,
+          "red_hsv_ranges": [
+            [
+              0,
+              90,
+              60,
+              12,
+              255,
+              255
+            ],
+            [
+              168,
+              90,
+              60,
+              180,
+              255,
+              255
+            ]
+          ],
+          "yellow_hsv_ranges": [
+            [
+              16,
+              80,
+              70,
+              42,
+              255,
+              255
+            ]
+          ],
+          "zones": {
+            "zone_a": {
+              "x1": 0.04,
+              "y1": 0.12,
+              "x2": 0.48,
+              "y2": 0.96
+            },
+            "zone_b": {
+              "x1": 0.52,
+              "y1": 0.12,
+              "x2": 0.96,
+              "y2": 0.96
+            }
+          }
+        }
+      }
+    },
+    "steps": [
+      {
+        "step_id": "S001",
+        "order": 1,
+        "activity": "OPEN_RACK",
+        "expected_object": "rack_opened",
+        "required": true,
+        "description": "Open the rack; ArUco marker 13 must be visible in its open-state position.",
+        "uncertain_on_no_detection": true
+      },
+      {
+        "step_id": "S002",
+        "order": 2,
+        "activity": "CONFIRM_RACK_OPEN",
+        "expected_object": "rack_opened",
+        "required": true,
+        "description": "Verify the rack-open marker remains visible.",
+        "uncertain_on_no_detection": true
+      },
+      {
+        "step_id": "S003",
+        "order": 3,
+        "activity": "PLACE_RED_BOX",
+        "expected_object": "red_box",
+        "required": true,
+        "description": "Keep the entire detected red box inside configured Zone A for one second.",
+        "uncertain_on_no_detection": true
+      },
+      {
+        "step_id": "S004",
+        "order": 4,
+        "activity": "PLACE_YELLOW_BOX",
+        "expected_object": "yellow_box",
+        "required": true,
+        "description": "Keep the entire detected yellow box inside configured Zone B for one second.",
+        "uncertain_on_no_detection": true
+      },
+      {
+        "step_id": "S005",
+        "order": 5,
+        "activity": "VERIFY_PAYLOAD",
+        "expected_object": "both_boxes_verified",
+        "required": true,
+        "description": "Verify both boxes are visible, in their assigned zones, and held for one second.",
+        "uncertain_on_no_detection": true
+      },
+      {
+        "step_id": "S006",
+        "order": 6,
+        "activity": "CLOSE_RACK",
+        "expected_object": "rack_closed",
+        "required": true,
+        "description": "Close the rack; ArUco marker 14 must be visible in its closed-state position.",
+        "uncertain_on_no_detection": true
+      },
+      {
+        "step_id": "S007",
+        "order": 7,
+        "activity": "CONFIRM_RACK_CLOSED",
+        "expected_object": "rack_closed",
+        "required": true,
+        "description": "Verify the rack-closed marker remains visible.",
+        "uncertain_on_no_detection": true
+      },
+      {
+        "step_id": "S008",
+        "order": 8,
+        "activity": "COMPLETE_TRANSFER",
+        "expected_object": "transfer_complete",
+        "required": true,
+        "manual_confirmation_allowed": true,
+        "uncertain_on_no_detection": true,
+        "description": "Explicitly mark the validated transfer complete."
+      }
+    ]
+  },
+  "evidence": [],
+  "session_id": "23e67ee8b3d2440a92ad0ce3eba160d8",
+  "started_at": "2026-09-27T11:19:43+00:00",
+  "completed_at": "2026-09-27T11:35:57+00:00",
+  "status": "INTERRUPTED",
+  "event_count": 218,
+  "interruption_reason": "backend_restarted"
+}
