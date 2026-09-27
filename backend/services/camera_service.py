@@ -102,6 +102,7 @@ class CameraService:
 
         self._lock = threading.Condition()
         self._camera_lock = threading.Lock()
+        self._lifecycle_lock = threading.Lock()
 
         self._latest_jpeg: bytes | None = None
         self._external_jpeg: bytes | None = None
@@ -112,6 +113,7 @@ class CameraService:
 
         self._camera = None
         self._thread: threading.Thread | None = None
+        self._enabled = False
 
         self._stop = threading.Event()
 
@@ -203,45 +205,49 @@ class CameraService:
 
     def ensure_started(self) -> None:
         """Start the background camera service."""
+        with self._lifecycle_lock:
+            if self._thread is not None and self._thread.is_alive():
+                self._enabled = True
+                return
 
-        if self._thread is not None and self._thread.is_alive():
-            return
-
-        self._stop.clear()
-
-        self._thread = threading.Thread(
-            target=self._loop,
-            daemon=True,
-            name="astra-camera",
-        )
-
-        self._thread.start()
+            self._stop.clear()
+            self._enabled = True
+            self._thread = threading.Thread(
+                target=self._loop,
+                daemon=True,
+                name="astra-camera",
+            )
+            self._thread.start()
 
     def stop(self) -> None:
         """Stop the camera service and release the camera."""
+        with self._lifecycle_lock:
+            self._enabled = False
+            self._stop.set()
 
-        self._stop.set()
+            with self._camera_lock:
+                cam = self._camera
+                self._camera = None
 
-        with self._camera_lock:
-            cam = self._camera
-            self._camera = None
+            if cam is not None:
+                try:
+                    cam.release()
+                except Exception:
+                    pass
 
-        if cam is not None:
-            try:
-                cam.release()
-            except Exception:
-                pass
+            thread = self._thread
+            if (
+                thread is not None
+                and thread.is_alive()
+                and thread is not threading.current_thread()
+            ):
+                thread.join(timeout=2.0)
 
-        thread = self._thread
-
-        if (
-            thread is not None
-            and thread.is_alive()
-            and thread is not threading.current_thread()
-        ):
-            thread.join(timeout=2.0)
-
-        self._thread = None
+            self._thread = None
+            external_jpeg = self._external_jpeg if self._external_fresh() else None
+            with self._lock:
+                self._latest_jpeg = external_jpeg
+                self._lock.notify_all()
 
     # -----------------------------------------------------
     # LOCAL CAMERA
@@ -251,6 +257,9 @@ class CameraService:
         """Open the local camera if it is not already open."""
 
         with self._camera_lock:
+            if self._stop.is_set():
+                return False
+
             if self._camera is not None:
                 try:
                     if self._camera.is_opened():
@@ -358,12 +367,16 @@ class CameraService:
     def get_status(self) -> dict:
         """Return the current camera service status."""
 
+        with self._lifecycle_lock:
+            capture_running = self._thread is not None and self._thread.is_alive()
+
         with self._lock:
             has_frame = self._latest_jpeg is not None
             capture_count = self._capture_count
             error = self._error
             width = self.width
             height = self.height
+            enabled = self._enabled
 
         with self._camera_lock:
             cam = self._camera
@@ -379,7 +392,9 @@ class CameraService:
         external = self._external_fresh()
 
         return {
-            "connected": bool(has_frame or cam_open or external),
+            "connected": bool(external or (enabled and (has_frame or cam_open))),
+            "enabled": enabled,
+            "capture_running": capture_running,
             "camera_open": cam_open,
             "external_stream": external,
             "has_frame": has_frame,
@@ -442,3 +457,9 @@ def get_camera_service() -> CameraService:
                 _service = CameraService()
 
     return _service
+
+
+def stop_camera_service() -> None:
+    """Release the shared camera when the backend shuts down."""
+    if _service is not None:
+        _service.stop()

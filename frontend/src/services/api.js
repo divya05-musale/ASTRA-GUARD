@@ -65,6 +65,8 @@ export const api = {
   missionProtocol: () => get('/api/mission/protocol'),
   resetMission: () => post('/api/mission/reset', {}),
   cameraStatus: () => get('/api/camera/status'),
+  startCamera: () => post('/api/camera/start', {}),
+  stopCamera: () => post('/api/camera/stop', {}),
   events: (limit) =>
     get(typeof limit === 'number' ? `/api/events?limit=${limit}` : '/api/events'),
   status: () => get('/api/status'),

@@ -1,8 +1,11 @@
 """ASTRA-GUARD backend — FastAPI thin integration layer."""
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api import camera, events, experiments, health, mission, protocol, sessions, status, voice
+from backend.services.camera_service import stop_camera_service
 
 ALLOWED_ORIGINS = [
     "http://localhost:5173",
@@ -17,6 +20,11 @@ ALLOWED_ORIGINS = [
 
 
 def create_app() -> FastAPI:
+    @asynccontextmanager
+    async def lifespan(_app: FastAPI):
+        yield
+        stop_camera_service()
+
     app = FastAPI(
         title="ASTRA-GUARD API",
         description=(
@@ -24,6 +32,7 @@ def create_app() -> FastAPI:
             "mission system (EXP001 protocol). No duplicated decision logic."
         ),
         version="0.1.0",
+        lifespan=lifespan,
     )
     app.add_middleware(
         CORSMiddleware,

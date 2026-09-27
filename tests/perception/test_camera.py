@@ -37,6 +37,21 @@ def test_successful_open_with_mock():
         assert not cam.is_opened()
 
 
+def test_camera_lock_prevents_duplicate_capture_owner():
+    first = Camera(camera_index=97)
+    second = Camera(camera_index=97)
+    with patch("agent.perception.camera.cv2.VideoCapture", return_value=_fake_cap(True)):
+        first.open()
+        try:
+            with pytest.raises(CameraOpenError, match="already owned by ASTRA-GUARD"):
+                second.open()
+        finally:
+            first.release()
+
+        second.open()
+        second.release()
+
+
 def test_failed_open_raises():
     cam = Camera(camera_index=0)
     with patch("agent.perception.camera.cv2.VideoCapture", return_value=_fake_cap(False)):

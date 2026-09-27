@@ -4,6 +4,7 @@ import pytest
 from fastapi import HTTPException
 
 from backend.api import experiments
+from backend.services.session_store import SessionStore
 
 
 @pytest.mark.parametrize(
@@ -75,3 +76,39 @@ def test_selection_refuses_to_replace_an_in_progress_session(monkeypatch):
 
     assert error.value.status_code == 409
     assert reset_called is False
+
+
+def test_selection_preserves_completed_and_cancelled_session_history(monkeypatch, tmp_path):
+    store = SessionStore(tmp_path / "sessions")
+    records = []
+    for status in ("COMPLETED", "CANCELLED"):
+        record = store.create({
+            "experiment_id": "EXP001",
+            "input_source": "webcam",
+            "evidence": [{"path": "saved-evidence.jpg", "kind": "image"}],
+        })
+        store.append_event(record["session_id"], {
+            "timestamp": "2026-09-27T00:00:00+00:00",
+            "decision": {"status": "CORRECT"},
+        })
+        store.update(record["session_id"], {"status": status})
+        records.append(record["session_id"])
+
+    selected_service = type("Mission", (), {
+        "experiment": {"experiment_id": "EXP006"},
+        "get_progress": lambda self: {"total_steps": 8, "current_step": "S001"},
+    })()
+
+    class IdleMission:
+        active_session_id = None
+
+    monkeypatch.setattr(experiments, "get_mission_service", lambda: IdleMission())
+    monkeypatch.setattr(experiments, "find_valid_experiment", lambda _id: Path("EXP006"))
+    monkeypatch.setattr(experiments, "reset_mission_service", lambda _path: selected_service)
+    monkeypatch.setattr(experiments, "reset_protocol_service", lambda _path: None)
+
+    assert experiments.select_experiment("EXP006")["selected"] is True
+    saved = [store.get(session_id) for session_id in records]
+    assert [record["status"] for record in saved] == ["COMPLETED", "CANCELLED"]
+    assert [record["events"][0]["decision"]["status"] for record in saved] == ["CORRECT", "CORRECT"]
+    assert all(record["evidence"][0]["path"] == "saved-evidence.jpg" for record in saved)

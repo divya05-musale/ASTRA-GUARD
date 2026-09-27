@@ -23,14 +23,14 @@ import SessionHistory from './components/SessionHistory.jsx';
 
 const POLL_MS = 750;
 
-function LiveFeedTab({ health, status, camera, events, performance }) {
+function LiveFeedTab({ health, status, camera, events, performance, onCameraChanged }) {
   const lastEvent = (Array.isArray(events) && events.length) ? events[events.length - 1] : null;
   const objects = lastEvent?.objects ?? status?.objects ?? [];
   const hands = lastEvent?.hands ?? status?.hands ?? [];
   return (
     <div className="deck-grid deck-grid-live">
       <div className="deck-left">
-        <LiveCamera camera={camera} />
+        <LiveCamera camera={camera} onCameraChanged={onCameraChanged} />
         <LiveGuidance status={status} />
       </div>
       <aside className="deck-right">
@@ -181,7 +181,7 @@ export default function App() {
         <div className="deck-grid">
           <div className="deck-left">
             <DecisionAlert status={status} onManualConfirm={confirmUncertain} confirming={confirming} />
-            <LiveCamera camera={camera} />
+            <LiveCamera camera={camera} onCameraChanged={refresh} />
             <LiveGuidance voice={voice} status={status} busy={voiceBusy} onLanguage={changeVoiceLanguage} onToggle={toggleVoiceEnabled} />
             <RecentEvents events={events} />
           </div>
@@ -196,7 +196,7 @@ export default function App() {
       );
       break;
     case 'Live Feed':
-      pageContent = <LiveFeedTab health={health} status={status} camera={camera} events={events} performance={performance} />;
+      pageContent = <LiveFeedTab health={health} status={status} camera={camera} events={events} performance={performance} onCameraChanged={refresh} />;
       break;
     case 'Memory':
       pageContent = <MemoryTab protocol={protocol} progress={progress} events={events} />;

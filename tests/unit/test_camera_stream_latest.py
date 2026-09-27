@@ -10,6 +10,8 @@ from backend.services.camera_service import (
 )
 import backend.services.camera_service as camera_service_module
 import backend.api.camera as camera_api
+import pytest
+from fastapi import HTTPException
 
 
 def test_external_frame_status_includes_resolution_and_count():
@@ -80,3 +82,59 @@ def test_publish_route_keeps_resolution_metadata(monkeypatch):
     assert result["success"] is True
     assert service.get_status()["width"] == 32
     assert service.get_status()["height"] == 24
+
+
+def test_camera_start_is_idempotent_and_stop_releases_resource(monkeypatch):
+    created = []
+
+    class FakeCamera:
+        def __init__(self, **_kwargs):
+            self.released = False
+            created.append(self)
+
+        def open(self):
+            return self
+
+        def is_opened(self):
+            return not self.released
+
+        def read(self):
+            threading.Event().wait(0.005)
+            return False, None
+
+        def release(self):
+            self.released = True
+
+    monkeypatch.setattr("agent.perception.camera.Camera", FakeCamera)
+    service = CameraService()
+    monkeypatch.setattr(camera_api, "get_camera_service", lambda: service)
+
+    started = camera_api.camera_start()
+    first_thread = service._thread
+    second_start = camera_api.camera_start()
+
+    assert started["enabled"] is True
+    assert second_start["capture_running"] is True
+    assert service._thread is first_thread
+    assert len(created) == 1
+
+    stopped = camera_api.camera_stop()
+
+    assert stopped["enabled"] is False
+    assert stopped["capture_running"] is False
+    assert service.get_status()["camera_open"] is False
+    assert created[0].released is True
+
+
+def test_camera_lifecycle_refuses_external_camera_owner(monkeypatch):
+    service = CameraService()
+    jpeg = encode_bgr_to_jpeg(np.zeros((16, 16, 3), dtype=np.uint8))
+    assert jpeg is not None
+    assert service.publish_external_jpeg(jpeg)
+    monkeypatch.setattr(camera_api, "get_camera_service", lambda: service)
+
+    with pytest.raises(HTTPException) as error:
+        camera_api.camera_start()
+
+    assert error.value.status_code == 409
+    assert service._thread is None

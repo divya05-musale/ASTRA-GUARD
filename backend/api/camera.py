@@ -131,3 +131,29 @@ def camera_status():
     service = get_camera_service()
 
     return service.get_status()
+
+
+@router.post("/camera/start")
+def camera_start():
+    """Start the local shared camera capture loop without touching mission state."""
+    service = get_camera_service()
+    if service.get_status()["external_stream"]:
+        raise HTTPException(
+            status_code=409,
+            detail="The external perception pipeline currently owns the camera.",
+        )
+    service.ensure_started()
+    return {"success": True, **service.get_status()}
+
+
+@router.post("/camera/stop")
+def camera_stop():
+    """Stop local capture and release the camera without touching mission state."""
+    service = get_camera_service()
+    if service.get_status()["external_stream"]:
+        raise HTTPException(
+            status_code=409,
+            detail="The external perception pipeline currently owns the camera.",
+        )
+    service.stop()
+    return {"success": True, **service.get_status()}

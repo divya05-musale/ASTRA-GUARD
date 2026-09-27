@@ -5,12 +5,17 @@ No object detection here. Frames stay in BGR. All processing is local.
 from __future__ import annotations
 
 import logging
+import os
+import tempfile
+import threading
 from typing import Any, Dict, Optional, Tuple
 
 import cv2
 import numpy as np
 
 logger = logging.getLogger(__name__)
+_CAMERA_LOCKS: set[str] = set()
+_CAMERA_LOCKS_GUARD = threading.Lock()
 
 
 class CameraOpenError(RuntimeError):
@@ -31,15 +36,81 @@ class Camera:
         self.requested_height = int(height)
         self.requested_fps = float(fps)
         self._cap: Optional[cv2.VideoCapture] = None
+        self._device_lock = None
+        self._device_lock_path = os.path.join(
+            tempfile.gettempdir(),
+            f"astra-guard-camera-{self.camera_index}.lock",
+        )
+
+    def _acquire_device_lock(self) -> None:
+        with _CAMERA_LOCKS_GUARD:
+            if self._device_lock_path in _CAMERA_LOCKS:
+                raise CameraOpenError(
+                    f"Camera at index {self.camera_index} is already owned by ASTRA-GUARD."
+                )
+            _CAMERA_LOCKS.add(self._device_lock_path)
+
+        handle = None
+        try:
+            handle = open(self._device_lock_path, "a+b")
+            if os.name == "nt":
+                import msvcrt
+
+                handle.seek(0, os.SEEK_END)
+                if handle.tell() == 0:
+                    handle.write(b"\0")
+                    handle.flush()
+                handle.seek(0)
+                msvcrt.locking(handle.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+
+                fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
+            if handle is not None:
+                handle.close()
+            with _CAMERA_LOCKS_GUARD:
+                _CAMERA_LOCKS.discard(self._device_lock_path)
+            raise CameraOpenError(
+                f"Camera at index {self.camera_index} is already owned by ASTRA-GUARD."
+            ) from exc
+        self._device_lock = handle
+
+    def _release_device_lock(self) -> None:
+        handle = self._device_lock
+        self._device_lock = None
+        if handle is not None:
+            try:
+                if os.name == "nt":
+                    import msvcrt
+
+                    handle.seek(0)
+                    msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    import fcntl
+
+                    fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+            except OSError:
+                pass
+            finally:
+                handle.close()
+        with _CAMERA_LOCKS_GUARD:
+            _CAMERA_LOCKS.discard(self._device_lock_path)
 
     def open(self) -> "Camera":
-        cap = cv2.VideoCapture(self.camera_index, cv2.CAP_DSHOW)
+        try:
+            self._acquire_device_lock()
+            cap = cv2.VideoCapture(self.camera_index, cv2.CAP_DSHOW)
+        except Exception:
+            self._release_device_lock()
+            raise
         if cap is None or not cap.isOpened():
             if cap is not None:
                 try:
                     cap.release()
                 except Exception:
                     pass
+            self._release_device_lock()
             raise CameraOpenError(
                 f"Unable to open camera at index {self.camera_index}. "
                 "Possible causes: camera unavailable, in use by another app, "
@@ -76,6 +147,7 @@ class Camera:
                 logger.warning("Error releasing camera: %s", exc)
             finally:
                 self._cap = None
+        self._release_device_lock()
 
     def get_properties(self) -> Dict[str, Any]:
         props: Dict[str, Any] = {
