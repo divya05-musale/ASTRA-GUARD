@@ -14,12 +14,19 @@ function MetricGroup({ title, items }) {
   );
 }
 
-export default function SystemHealth({ health, camera, voice, connected, performance }) {
+export default function SystemHealth({ health, camera, voice, performance, perception, status }) {
   const cam = camera?.connected ? 'ONLINE' : 'OFFLINE';
+  const inference = perception?.inference_active ? 'ACTIVE' : 'IDLE';
+  const publishing = perception?.frame_publishing ? 'PUBLISHING' : 'IDLE';
+  const latestDetections = perception?.detections_fresh
+    ? `${perception.last_object_count ?? 0} objects · ${perception.last_hand_count ?? 0} hands`
+    : 'No recent inference output';
   const rows = [
     ['Camera', cam],
-    ['Perception', connected ? 'ONLINE' : 'OFFLINE'],
-    ['Mission Engine', health?.status === 'ok' ? 'ONLINE' : 'OFFLINE'],
+    ['YOLO + MediaPipe', inference],
+    ['Pipeline frames', publishing],
+    ['Latest detections', latestDetections],
+    ['Mission Engine', status ? 'ONLINE' : health?.status === 'ok' ? 'AVAILABLE' : 'OFFLINE'],
     ['Voice', voice?.engine_ready ? 'ONLINE' : 'OFFLINE'],
   ];
   return (
@@ -29,7 +36,7 @@ export default function SystemHealth({ health, camera, voice, connected, perform
         {rows.map(([k, v]) => (
           <li key={k}>
             <span>{k}</span>
-            <b className={v === 'ONLINE' ? 'ok' : 'bad'}>{v}</b>
+            <b className={['ONLINE', 'AVAILABLE', 'ACTIVE', 'PUBLISHING'].includes(v) ? 'ok' : 'bad'}>{v}</b>
           </li>
         ))}
       </ul>
@@ -46,9 +53,11 @@ export default function SystemHealth({ health, camera, voice, connected, perform
             ['YOLO', performance?.yolo_ms == null ? 'N/A' : `${performance.yolo_ms} ms`],
             ['MediaPipe', performance?.mediapipe_ms == null ? 'N/A' : `${performance.mediapipe_ms} ms`],
             ['Mission event', performance?.mission_event_ms == null ? 'N/A' : `${performance.mission_event_ms} ms`],
+            ['Processor total', performance?.process_frame_ms == null ? 'N/A' : `${performance.process_frame_ms} ms`],
           ]} />
           <MetricGroup title="Streaming" items={[
             ['JPEG encoding', performance?.jpeg_encode_ms == null ? 'N/A' : `${performance.jpeg_encode_ms} ms`],
+            ['Annotation', performance?.annotation_ms == null ? 'N/A' : `${performance.annotation_ms} ms`],
             ['Publishing', performance?.frame_publish_ms == null ? 'N/A' : `${performance.frame_publish_ms} ms`],
             ['Backend stream', performance?.backend_stream_fps == null ? 'N/A' : `${performance.backend_stream_fps} FPS`],
             ['Dashboard', performance?.dashboard_display_fps == null ? 'N/A' : `${performance.dashboard_display_fps} FPS`],

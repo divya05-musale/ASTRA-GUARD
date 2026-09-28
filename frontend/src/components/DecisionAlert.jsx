@@ -2,12 +2,13 @@ import { alertTone, display, formatConfidence, pillClass, prettyId, statusTone }
 
 export default function DecisionAlert({ status, onManualConfirm, confirming = false }) {
   const s = statusTone(status?.status);
+  const missionLabel = status?.active && s === 'IDLE' ? 'IN PROGRESS' : s;
   const actionable = s === 'DEVIATION' || s === 'UNCERTAIN';
   return (
     <section className={alertTone(s)}>
       <div className="alert-top">
         <span className={pillClass(s)}>
-          ● {s} · {display(status?.step_id ?? '—')}
+          ● {missionLabel} · {display(status?.step_id ?? '—')}
         </span>
         <h3 className="alert-title">Mission Control</h3>
         <span className="alert-action-label">
@@ -15,6 +16,7 @@ export default function DecisionAlert({ status, onManualConfirm, confirming = fa
             : s === 'UNCERTAIN' ? 'VERIFICATION REQUIRED'
             : s === 'COMPLETED' ? 'MISSION COMPLETE'
             : s === 'CORRECT' ? 'NOMINAL'
+            : status?.active && s === 'IDLE' ? 'AWAITING OBSERVATION'
             : 'STANDBY'}
         </span>
       </div>

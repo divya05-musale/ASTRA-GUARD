@@ -44,13 +44,17 @@ export default function SessionHistory() {
   };
 
   const cancelSession = async () => {
-    if (!selected?.session_id) return;
+    if (!selected?.session_id || !window.confirm('Cancel this active session? Its history, events, and evidence will be kept.')) return;
+    setActionBusy(true);
     try {
       const result = await api.endSession(selected.session_id);
       setSelected(result.session);
       await refresh();
+      setError('');
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : String(reason));
+    } finally {
+      setActionBusy(false);
     }
   };
 
@@ -131,7 +135,9 @@ export default function SessionHistory() {
             <a className="btn" href={api.sessionExportUrl(selected.session_id, 'json')}>Export JSON</a>
             <a className="btn" href={api.sessionExportUrl(selected.session_id, 'csv')}>Export CSV</a>
             {selected.status === 'IN_PROGRESS' ? (
-              <button className="btn" type="button" onClick={cancelSession}>Cancel session</button>
+              <button className="btn" type="button" onClick={cancelSession} disabled={actionBusy}>
+                {actionBusy ? 'Cancelling…' : 'Cancel session'}
+              </button>
             ) : null}
             {selected.status === 'IN_PROGRESS' && currentStep?.session_action ? (
               <button

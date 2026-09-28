@@ -92,7 +92,7 @@ export default function Experiments() {
       <header className="page-head">
         <div>
           <h2>Experiments</h2>
-          <p>Registered ASTRA-GUARD protocols and their validation status.</p>
+          <p>Registered ASTRA-DRISHTI protocols and their validation status.</p>
         </div>
         <div className="page-actions">
           <button className="btn btn-primary" type="button" onClick={refresh} disabled={loading}>Refresh</button>

@@ -20,7 +20,7 @@ export default function TopNav({ connected, health, active, onNav }) {
   return (
     <header className="topnav">
       <div className="topnav-left">
-        <span className="brand">ASTRA-GUARD</span>
+        <span className="brand">ASTRA-DRISHTI</span>
         <span className="sep">|</span>
         <span className="deck">FLIGHT DECK</span>
         <nav className="tabs">
@@ -53,10 +53,12 @@ export default function TopNav({ connected, health, active, onNav }) {
 export function MissionHeader({ overview, progress, status, onExperimentSelected }) {
   const [experiments, setExperiments] = useState([]);
   const [selecting, setSelecting] = useState(false);
+  const [canceling, setCanceling] = useState(false);
   const [selectionError, setSelectionError] = useState('');
   const total = Number(progress?.total_steps ?? 0);
   const num = stepNumber(progress?.current_step ?? status?.step_id);
   const active = status?.active;
+  const complete = status?.status === 'COMPLETED' || progress?.completed;
 
   useEffect(() => {
     let mounted = true;
@@ -84,17 +86,31 @@ export function MissionHeader({ overview, progress, status, onExperimentSelected
     }
   };
 
+  const cancelSession = async () => {
+    if (!status?.session_id || !window.confirm('Cancel this active session? Its history, events, and evidence will be kept.')) return;
+    setCanceling(true);
+    setSelectionError('');
+    try {
+      await api.endSession(status.session_id, 'CANCELLED');
+      await onExperimentSelected?.();
+    } catch (error) {
+      setSelectionError(error instanceof Error ? error.message : String(error));
+    } finally {
+      setCanceling(false);
+    }
+  };
+
   return (
     <div className="mission-head">
       <div>
         <div className="mission-kicker">
           <h2>Mission Control</h2>
-          <span className={active ? 'conn conn-on' : 'conn conn-off'}>
-            ● {active ? 'IN PROGRESS' : 'STANDBY'}
+          <span className={active || complete ? 'conn conn-on' : 'conn conn-off'}>
+            ● {complete ? 'COMPLETE' : active ? 'IN PROGRESS' : 'STANDBY'}
           </span>
         </div>
         <div className="mission-step">
-          {num && total ? `Step ${num} of ${total}` : 'Awaiting mission start'}
+          {active && num && total ? `Step ${num} of ${total}` : complete ? 'Mission complete' : 'Awaiting mission start'}
         </div>
         <p className="mission-sub">Real-time perception, decision and guidance for the active mission.</p>
       </div>
@@ -118,6 +134,11 @@ export function MissionHeader({ overview, progress, status, onExperimentSelected
           </select>
         </label>
         {selectionError ? <div className="profile-error" role="alert">{selectionError}</div> : null}
+        {active && status?.session_id ? (
+          <button className="btn btn-ghost" type="button" onClick={cancelSession} disabled={canceling || selecting}>
+            {canceling ? 'Cancelling…' : 'Cancel Session'}
+          </button>
+        ) : null}
         <div className="profile-title">
           {display(overview?.protocol_id)} · {display(overview?.protocol_name)}
         </div>

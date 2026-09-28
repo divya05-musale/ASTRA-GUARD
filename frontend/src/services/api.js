@@ -1,14 +1,26 @@
 const DEFAULT_API_BASE = 'http://127.0.0.1:8001'
 
 function resolveApiBase() {
+  const configuredBase = import.meta.env.VITE_API_BASE_URL?.trim()
+
+  // Use the cloud backend URL when configured.
+  if (configuredBase) {
+    return configuredBase.replace(/\/+$/, '')
+  }
+
+  // Preserve the existing local development setup.
   try {
     if (typeof window !== 'undefined' && window.location) {
       const host = window.location.hostname
+
       if (host && (window.location.port === '5173' || !window.location.port)) {
         return `http://${host}:8001`
       }
     }
-  } catch { /* ignore */ }
+  } catch {
+    // Ignore browser access errors.
+  }
+
   return DEFAULT_API_BASE
 }
 
@@ -56,6 +68,7 @@ export const api = {
   base: API_BASE,
   health: () => get('/api/health'),
   performance: () => get('/api/performance'),
+  perceptionStatus: () => get('/api/perception/status'),
   reportDashboardDisplay: (displayedFps, displayedAt) =>
     post('/api/performance/display', { displayed_fps: displayedFps, displayed_at: displayedAt }),
   mission: () => get('/api/mission'),
@@ -65,6 +78,15 @@ export const api = {
   missionProtocol: () => get('/api/mission/protocol'),
   resetMission: () => post('/api/mission/reset', {}),
   cameraStatus: () => get('/api/camera/status'),
+  selectCamera: (cameraIndex, source, backend = 'dshow', sourceName) =>
+    post('/api/camera/select', {
+      camera_index: cameraIndex,
+      source,
+      backend,
+      source_name: sourceName,
+    }),
+  discoverCameras: (maxIndex = 5) =>
+    get(`/api/camera/discover?max_index=${maxIndex}&backends=dshow&backends=msmf`),
   startCamera: () => post('/api/camera/start', {}),
   stopCamera: () => post('/api/camera/stop', {}),
   events: (limit) =>
