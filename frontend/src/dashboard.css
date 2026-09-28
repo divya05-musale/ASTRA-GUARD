@@ -105,6 +105,15 @@ body {
 .alert-hint { margin-top: 10px; font-size: 12px; color: var(--muted); }
 .camera-card { overflow: hidden; }
 .camera-control-error { margin-top: 8px; color: var(--danger); font-size: 12px; }
+.camera-source-controls { display: flex; align-items: end; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
+.camera-source-field { display: grid; gap: 4px; min-width: 190px; color: var(--muted); font-size: 10.5px; font-weight: 700; }
+.camera-source-field select, .camera-source-field input { min-height: 32px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text); padding: 5px 8px; font: inherit; }
+.camera-discovery { margin: 0 0 10px; border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; color: var(--muted); font-size: 11px; }
+.camera-discovery summary { cursor: pointer; color: var(--text); font-weight: 700; }
+.camera-discovery ul { display: grid; gap: 6px; margin: 8px 0; padding: 0; list-style: none; }
+.camera-discovery li { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.camera-discovery li small { flex-basis: 100%; }
+.camera-index-field { min-width: 130px; }
 .live-meta { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: var(--muted); }
 .dot { font-size: 10px; }
 .dot-on { color: var(--success); }
@@ -169,4 +178,191 @@ body {
 .performance-metric dt { color: var(--muted); font-size: 10.5px; }
 .performance-metric dd { margin: 0; text-align: right; font-size: 11px; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 @media (max-width: 560px) { .performance-groups { grid-template-columns: 1fr; } }
+/* ==========================================
+   ASTRA-GUARD DEMO DASHBOARD
+   Demo-specific styles only
+========================================== */
 
+/* Mission Control */
+.demo-mission-card {
+  margin-bottom: 14px;
+}
+
+.demo-progress-card {
+  margin-top: 14px;
+}
+
+.demo-progress-card .card-head {
+  align-items: center;
+}
+
+/* Main Dashboard Grid */
+.demo-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.demo-grid > .card {
+  min-width: 0;
+}
+
+/* Protocol Steps */
+.demo-protocol-list {
+  display: grid;
+  gap: 14px;
+  padding-left: 22px;
+  margin: 0;
+}
+
+.demo-protocol-list li {
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #f6f8fb;
+  line-height: 1.5;
+}
+
+.demo-protocol-list li p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Mission Summary */
+.demo-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.demo-summary-item {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #f6f8fb;
+}
+
+.demo-summary-item span {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.demo-summary-item strong {
+  font-size: 20px;
+  color: var(--primary);
+}
+
+/* Camera Feed */
+.demo-camera-card {
+  margin-top: 14px;
+}
+
+.demo-camera-placeholder {
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #111827;
+  color: #e5e7eb;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.demo-camera-placeholder strong {
+  color: #93c5fd;
+  letter-spacing: 0.08em;
+  font-size: 13px;
+}
+
+.demo-camera-placeholder p {
+  color: #e5e7eb;
+  line-height: 1.8;
+  font-size: 13px;
+}
+
+/* Demo Events */
+.demo-events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.demo-event {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f6f8fb;
+  overflow-wrap: anywhere;
+}
+
+.demo-event-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.demo-event-head strong {
+  color: var(--success);
+  font-size: 12px;
+}
+
+.demo-event-head span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.demo-event-activity {
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.demo-event-guidance {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* Medium Screens */
+@media (max-width: 760px) {
+  .demo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-events-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-camera-placeholder {
+    min-height: 180px;
+  }
+}
+
+/* Small Screens */
+@media (max-width: 480px) {
+  .deck-main {
+    padding: 12px;
+  }
+
+  .topnav {
+    padding: 0 12px;
+  }
+
+  .demo-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .demo-event {
+    padding: 12px;
+  }
+}

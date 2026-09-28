@@ -1,3 +1,6 @@
+
+import { DEMO_MODE } from './services/demoData.js';
+import DemoDashboard from './components/DemoDashboard.jsx';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import './dashboard.css';
@@ -22,8 +25,9 @@ import { display } from './services/api.js';
 import SessionHistory from './components/SessionHistory.jsx';
 
 const POLL_MS = 750;
+const CAMERA_STATUS_UNAVAILABLE = 'camera_status_unavailable';
 
-function LiveFeedTab({ health, status, camera, events, performance, onCameraChanged }) {
+function LiveFeedTab({ health, status, camera, events, performance, perception, onCameraChanged }) {
   const lastEvent = (Array.isArray(events) && events.length) ? events[events.length - 1] : null;
   const objects = lastEvent?.objects ?? status?.objects ?? [];
   const hands = lastEvent?.hands ?? status?.hands ?? [];
@@ -35,7 +39,7 @@ function LiveFeedTab({ health, status, camera, events, performance, onCameraChan
       </div>
       <aside className="deck-right">
         <DetectionsPanel objects={objects} hands={hands} status={status} event={lastEvent} />
-        <SystemHealth health={health} camera={camera} connected={Boolean(health || camera)} performance={performance} />
+        <SystemHealth health={health} camera={camera} performance={performance} perception={perception} status={status} />
       </aside>
     </div>
   );
@@ -109,6 +113,7 @@ export default function App() {
   const [protocol, setProtocol] = useState(null);
   const [camera, setCamera] = useState(null);
   const [performance, setPerformance] = useState(null);
+  const [perception, setPerception] = useState(null);
   const [events, setEvents] = useState([]);
   const [connected, setConnected] = useState(false);
   const [activeNav, setActiveNav] = useState('Mission');
@@ -116,10 +121,14 @@ export default function App() {
   const [voiceBusy, setVoiceBusy] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const timer = useRef(null);
+  const refreshInFlight = useRef(false);
 
   const refresh = useCallback(async () => {
+    if (DEMO_MODE) return;
+    if (refreshInFlight.current) return;
+    refreshInFlight.current = true;
     try {
-      const [h, o, s, p, sum, ev, v, proto, cam, perf] = await Promise.all([
+      const [h, o, s, p, sum, ev, v, proto, cam, perf, perceptionStatus] = await Promise.all([
         api.health().catch(() => null),
         api.mission().catch(() => null),
         api.missionStatus().catch(() => null),
@@ -130,13 +139,29 @@ export default function App() {
         api.missionProtocol().catch(() => null),
         api.cameraStatus().catch(() => null),
         api.performance().catch(() => null),
+        api.perceptionStatus().catch(() => null),
       ]);
       setHealth(h); setOverview(o); setStatus(s);
       setProgress(p); setSummary(sum);
       setEvents(Array.isArray(ev) ? ev : (Array.isArray(ev?.events) ? ev.events : []));
-      setVoice(v); setProtocol(proto); setCamera(cam); setPerformance(perf);
+      setVoice(v); setProtocol(proto); setPerformance(perf);
+      if (cam) {
+        setCamera(cam);
+      } else {
+        setCamera((previous) => previous
+          ? {
+              ...previous,
+              connected: false,
+              has_frame: false,
+              frame_age_seconds: null,
+              [CAMERA_STATUS_UNAVAILABLE]: true,
+            }
+          : null);
+      }
+      setPerception(perceptionStatus);
       setConnected(Boolean(h || o || s));
     } catch { setConnected(false); }
+    finally { refreshInFlight.current = false; }
   }, []);
 
   const changeVoiceLanguage = useCallback(async (language) => {
@@ -168,12 +193,17 @@ export default function App() {
     }
   }, [status, refresh]);
 
-  useEffect(() => {
+useEffect(() => {
+    if (DEMO_MODE) return;
+
     refresh();
     timer.current = setInterval(refresh, POLL_MS);
-    return () => clearInterval(timer.current);
-  }, [refresh]);
 
+    return () => clearInterval(timer.current);
+}, [refresh]);
+  if (DEMO_MODE) {
+    return <DemoDashboard />;
+  }
   let pageContent = null;
   switch (activeNav) {
     case 'Mission':
@@ -190,13 +220,13 @@ export default function App() {
             <MissionTimeline protocol={protocol} progress={progress} events={events} />
             <EventStatistics summary={summary} />
             <DecisionSequence events={events} />
-            <SystemHealth health={health} camera={camera} voice={voice} connected={connected} performance={performance} />
+            <SystemHealth health={health} camera={camera} voice={voice} performance={performance} perception={perception} status={status} />
           </aside>
         </div>
       );
       break;
     case 'Live Feed':
-      pageContent = <LiveFeedTab health={health} status={status} camera={camera} events={events} performance={performance} onCameraChanged={refresh} />;
+      pageContent = <LiveFeedTab health={health} status={status} camera={camera} events={events} performance={performance} perception={perception} onCameraChanged={refresh} />;
       break;
     case 'Memory':
       pageContent = <MemoryTab protocol={protocol} progress={progress} events={events} />;
@@ -232,7 +262,7 @@ export default function App() {
         />
         {pageContent}
         <footer className="deck-foot">
-          <span>ASTRA-GUARD · Local Mission System</span>
+          <span>ASTRA-DRISHTI · Local Mission System</span>
           <span>Backend {display(api.base)} · Health {display(health?.status)}</span>
           <span>Voice {(voice?.language ?? 'en').toUpperCase()} · {(voice?.enabled ?? true) ? 'ON' : 'OFF'}</span>
         </footer>
