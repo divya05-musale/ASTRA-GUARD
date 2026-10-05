@@ -5,21 +5,20 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api import camera, events, experiments, health, mission, protocol, sessions, status, voice
+from backend.core.config import get_settings
 from backend.services.camera_service import stop_camera_service
 
-ALLOWED_ORIGINS = [
+
+settings = get_settings()
+ALLOWED_ORIGINS = settings.BACKEND_CORS_ORIGINS or [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
 ]
 
 
 def create_app() -> FastAPI:
+    allowed_origins = list(ALLOWED_ORIGINS)
+
     @asynccontextmanager
     async def lifespan(_app: FastAPI):
         yield
@@ -36,8 +35,8 @@ def create_app() -> FastAPI:
     )
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=ALLOWED_ORIGINS,
-    allow_origin_regex=r"^http://(localhost|127\.0\.0\.1):51[7-9][0-9]$",
+        allow_origins=allowed_origins,
+        allow_origin_regex=r"^(https?://)?(localhost|127\.0\.0\.1|.*\.vercel\.app)(:\d+)?$",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

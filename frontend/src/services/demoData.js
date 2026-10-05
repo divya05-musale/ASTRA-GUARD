@@ -1,7 +1,7 @@
 // ASTRA-GUARD Demo Mode Data
 // All data in this file is synthetic and intended for demonstration only.
-
-export const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === "true";
+// Force demo mode to remain local-only so production always uses live backend data.
+export const DEMO_MODE = import.meta.env.DEV && import.meta.env.VITE_DEMO_MODE === "true";
 
 // Demo mission configuration
 export const demoMission = {

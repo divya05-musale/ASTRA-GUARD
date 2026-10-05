@@ -1,27 +1,26 @@
-const DEFAULT_API_BASE = 'http://127.0.0.1:8001'
+const DEFAULT_LOCAL_API_BASE = 'http://127.0.0.1:8001'
+const DEFAULT_CLOUD_API_BASE = 'https://astra-guard-backend.onrender.com'
 
 function resolveApiBase() {
   const configuredBase = import.meta.env.VITE_API_BASE_URL?.trim()
 
-  // Use the cloud backend URL when configured.
   if (configuredBase) {
     return configuredBase.replace(/\/+$/, '')
   }
 
-  // Preserve the existing local development setup.
   try {
     if (typeof window !== 'undefined' && window.location) {
       const host = window.location.hostname
-
-      if (host && (window.location.port === '5173' || !window.location.port)) {
-        return `http://${host}:8001`
+      const isLocalHost = ['localhost', '127.0.0.1', '0.0.0.0'].includes(host)
+      if (isLocalHost) {
+        return DEFAULT_LOCAL_API_BASE
       }
     }
   } catch {
     // Ignore browser access errors.
   }
 
-  return DEFAULT_API_BASE
+  return DEFAULT_CLOUD_API_BASE
 }
 
 const API_BASE = resolveApiBase()

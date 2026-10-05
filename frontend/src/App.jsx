@@ -57,7 +57,7 @@ function MemoryTab({ protocol, progress, events }) {
   );
 }
 
-function AnalyticsTab({ progress, summary, status, events }) {
+function AnalyticsTab({ protocol, progress, summary, status, events }) {
   return (
     <div className="deck-grid">
       <div className="deck-left">
@@ -232,7 +232,7 @@ useEffect(() => {
       pageContent = <MemoryTab protocol={protocol} progress={progress} events={events} />;
       break;
     case 'Analytics':
-      pageContent = <AnalyticsTab progress={progress} summary={summary} status={status} events={events} />;
+      pageContent = <AnalyticsTab protocol={protocol} progress={progress} summary={summary} status={status} events={events} />;
       break;
     case 'Settings':
       pageContent = <SettingsTab voice={voice} setVoice={setVoice} voiceBusy={voiceBusy} setVoiceBusy={setVoiceBusy} />;

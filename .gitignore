@@ -43,3 +43,17 @@ runs/
 
 # Project archive / old debugging files
 _archive/
+
+# Frontend dependencies and generated files
+frontend/node_modules/
+frontend/dist/
+
+# Generated execution session records
+data/execution/session_records/
+
+# Local camera diagnostics and backups
+camera_test.py
+check_cameras*.py
+scripts/camera_probe.py
+scripts/fix_camera.bat
+frontend/src/App.backup.jsx

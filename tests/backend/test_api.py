@@ -140,3 +140,15 @@ def test_cors_preflight_allows_loopback_vite_fallback_port():
     )
     assert response.status_code == 200
     assert response.headers["access-control-allow-origin"] == "http://localhost:5174"
+
+
+def test_cors_preflight_allows_vercel_production_origin():
+    response = client.options(
+        "/api/health",
+        headers={
+            "Origin": "https://astra-guard-seven.vercel.app",
+            "Access-Control-Request-Method": "GET",
+        },
+    )
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "https://astra-guard-seven.vercel.app"
