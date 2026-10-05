@@ -1,7 +1,7 @@
 """Camera route Pydantic schemas."""
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Literal, Optional
 from pydantic import BaseModel, Field
 
 
@@ -19,6 +19,13 @@ class CameraStatusResponse(BaseModel):
     frames_captured: int = 0
     camera_index: int = 0
     error: Optional[str] = None
+
+
+class CameraSelectRequest(BaseModel):
+    camera_index: int = Field(ge=0)
+    source: Literal["laptop", "usb"]
+    backend: Literal["auto", "dshow", "msmf"] = "dshow"
+    source_name: Optional[str] = None
 
 
 class CameraDiscoveryResponse(BaseModel):
