@@ -29,8 +29,9 @@ const CAMERA_STATUS_UNAVAILABLE = 'camera_status_unavailable';
 
 function LiveFeedTab({ health, status, camera, events, performance, perception, onCameraChanged }) {
   const lastEvent = (Array.isArray(events) && events.length) ? events[events.length - 1] : null;
-  const objects = lastEvent?.objects ?? status?.objects ?? [];
-  const hands = lastEvent?.hands ?? status?.hands ?? [];
+  const latestPerception = perception?.detections_fresh ? perception : lastEvent?.perception;
+  const objects = latestPerception?.latest_objects ?? latestPerception?.objects ?? lastEvent?.objects ?? status?.objects ?? [];
+  const hands = latestPerception?.latest_hands ?? latestPerception?.hands ?? lastEvent?.hands ?? status?.hands ?? [];
   return (
     <div className="deck-grid deck-grid-live">
       <div className="deck-left">

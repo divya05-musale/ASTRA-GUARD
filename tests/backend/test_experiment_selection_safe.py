@@ -78,6 +78,63 @@ def test_selection_refuses_to_replace_an_in_progress_session(monkeypatch):
     assert reset_called is False
 
 
+def test_selection_resets_cached_browser_perception_processor(monkeypatch):
+    calls = []
+    selected_service = type("Mission", (), {
+        "experiment": {"experiment_id": "EXP006"},
+        "get_progress": lambda self: {"total_steps": 8, "current_step": "S001"},
+    })()
+
+    class IdleMission:
+        active_session_id = None
+
+    class BrowserPerception:
+        def reset_processor(self):
+            calls.append("reset_processor")
+
+    monkeypatch.setattr(experiments, "get_mission_service", lambda: IdleMission())
+    monkeypatch.setattr(experiments, "find_valid_experiment", lambda _id: Path("EXP006"))
+    monkeypatch.setattr(experiments, "reset_mission_service", lambda _path: selected_service)
+    monkeypatch.setattr(experiments, "reset_protocol_service", lambda _path: None)
+    monkeypatch.setattr(experiments, "get_browser_perception_service", lambda: BrowserPerception())
+
+    response = experiments.select_experiment("EXP006")
+
+    assert response["selected"] is True
+    assert calls == ["reset_processor"]
+
+
+def test_browser_processor_reset_clears_old_detections_and_closes_tracker():
+    from backend.services.browser_perception_service import BrowserPerceptionService
+
+    closed = []
+
+    class Tracker:
+        def close(self):
+            closed.append(True)
+
+    service = BrowserPerceptionService()
+    service._processor = object()
+    service._object_detector = object()
+    service._hand_tracker = Tracker()
+    service._frames_processed = 12
+    service._last_object_count = 2
+    service._last_hand_count = 1
+    service._last_objects = [{"class_name": "person"}]
+    service._last_hands = [{"handedness": "Right"}]
+
+    service.reset_processor()
+    status = service.get_status()
+
+    assert closed == [True]
+    assert service._processor is None
+    assert status["frames_processed"] == 0
+    assert status["last_object_count"] == 0
+    assert status["last_hand_count"] == 0
+    assert status["latest_objects"] == []
+    assert status["latest_hands"] == []
+
+
 def test_selection_preserves_completed_and_cancelled_session_history(monkeypatch, tmp_path):
     store = SessionStore(tmp_path / "sessions")
     records = []

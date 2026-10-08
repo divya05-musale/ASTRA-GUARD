@@ -198,6 +198,25 @@ def test_reset_clears_deduplication_state():
     assert voice.get_status()["last_guidance"] is not None
 
 
+def test_reset_does_not_wait_for_blocked_tts_engine():
+    import time
+
+    voice = _new_voice()
+    voice._last_signature = ("S001", "UNCERTAIN", "LOW_CONFIDENCE", "marker missing")
+    voice._last_guidance = "marker missing"
+    voice._engine_lock.acquire()
+    try:
+        started = time.monotonic()
+        voice.reset()
+        elapsed = time.monotonic() - started
+    finally:
+        voice._engine_lock.release()
+
+    assert elapsed < 1.0
+    assert voice._last_signature is None
+    assert voice.get_status()["last_guidance"] is None
+
+
 # ---------------------------------------------------------------------
 # Test 7: Voice OFF -> no speech, mission unaffected
 # ---------------------------------------------------------------------

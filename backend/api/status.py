@@ -2,6 +2,7 @@
 from fastapi import APIRouter
 from backend.services.mission_service import get_mission_service
 from backend.services.performance_service import get_performance_monitor
+from backend.services.browser_perception_service import get_browser_perception_service
 
 router = APIRouter()
 
@@ -14,6 +15,11 @@ def get_status() -> dict:
 @router.get("/performance")
 def get_performance() -> dict:
     return get_performance_monitor().get_status()
+
+
+@router.get("/perception/status")
+def get_perception_status() -> dict:
+    return get_browser_perception_service().get_status()
 
 
 @router.post("/performance/display")

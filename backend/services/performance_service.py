@@ -30,7 +30,7 @@ class PerformanceMonitor:
                 )
             for key in (
                 "capture_fps", "yolo_ms", "mediapipe_ms", "mission_event_ms",
-                "jpeg_encode_ms", "frame_publish_ms", "publisher_queue_ms",
+                "process_frame_ms", "jpeg_encode_ms", "frame_publish_ms", "publisher_queue_ms",
                 "publisher_dropped_frames", "captured_monotonic",
             ):
                 if key in metrics:

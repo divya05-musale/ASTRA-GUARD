@@ -37,7 +37,7 @@ export default function DetectionsPanel({ objects, hands, status, event }) {
             {handList.slice(0, 6).map((h, idx) => (
               <li key={`h-${idx}`}>
                 <span className="badge badge-hand">{display(h.handedness ?? 'Hand')}</span>
-                <span className="mono">{formatConfidence(h.score)}</span>
+                <span className="mono">{formatConfidence(h.score ?? h.confidence)}</span>
                 {Array.isArray(h.landmarks) ? <span className="mono">{display(h.landmarks.length)} LM</span> : null}
               </li>
             ))}

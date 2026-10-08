@@ -16,7 +16,7 @@ from fastapi import HTTPException
 
 def test_external_frame_status_includes_resolution_and_count():
     service = CameraService()
-    frame = np.zeros((240, 320, 3), dtype=np.uint8)
+    frame = np.full((240, 320, 3), 120, dtype=np.uint8)
     jpeg = encode_bgr_to_jpeg(frame)
 
     assert jpeg is not None
@@ -28,9 +28,18 @@ def test_external_frame_status_includes_resolution_and_count():
     assert status["frames_captured"] == 1
 
 
+def test_external_frame_rejects_black_jpeg():
+    service = CameraService()
+    jpeg = encode_bgr_to_jpeg(np.zeros((240, 320, 3), dtype=np.uint8))
+
+    assert jpeg is not None
+    assert service.publish_external_jpeg(jpeg) is False
+    assert service.get_status()["frames_captured"] == 0
+
+
 def test_mjpeg_stream_waits_for_new_frame(monkeypatch):
     service = CameraService()
-    first_frame = np.zeros((16, 16, 3), dtype=np.uint8)
+    first_frame = np.full((16, 16, 3), 120, dtype=np.uint8)
     second_frame = np.full((16, 16, 3), 255, dtype=np.uint8)
     first_jpeg = encode_bgr_to_jpeg(first_frame)
     second_jpeg = encode_bgr_to_jpeg(second_frame)
@@ -67,7 +76,7 @@ def test_mjpeg_stream_waits_for_new_frame(monkeypatch):
 
 def test_publish_route_keeps_resolution_metadata(monkeypatch):
     service = CameraService()
-    jpeg = encode_bgr_to_jpeg(np.zeros((24, 32, 3), dtype=np.uint8))
+    jpeg = encode_bgr_to_jpeg(np.full((24, 32, 3), 120, dtype=np.uint8))
     assert jpeg is not None
 
     class FakeRequest:
@@ -90,6 +99,7 @@ def test_camera_start_is_idempotent_and_stop_releases_resource(monkeypatch):
     class FakeCamera:
         def __init__(self, **_kwargs):
             self.released = False
+            self.frame = np.full((240, 320, 3), 120, dtype=np.uint8)
             created.append(self)
 
         def open(self):
@@ -99,8 +109,7 @@ def test_camera_start_is_idempotent_and_stop_releases_resource(monkeypatch):
             return not self.released
 
         def read(self):
-            threading.Event().wait(0.005)
-            return False, None
+            return True, self.frame
 
         def release(self):
             self.released = True
@@ -128,7 +137,7 @@ def test_camera_start_is_idempotent_and_stop_releases_resource(monkeypatch):
 
 def test_camera_lifecycle_refuses_external_camera_owner(monkeypatch):
     service = CameraService()
-    jpeg = encode_bgr_to_jpeg(np.zeros((16, 16, 3), dtype=np.uint8))
+    jpeg = encode_bgr_to_jpeg(np.full((16, 16, 3), 120, dtype=np.uint8))
     assert jpeg is not None
     assert service.publish_external_jpeg(jpeg)
     monkeypatch.setattr(camera_api, "get_camera_service", lambda: service)

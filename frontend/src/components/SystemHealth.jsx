@@ -24,6 +24,8 @@ export default function SystemHealth({ health, camera, voice, performance, perce
   const rows = [
     ['Camera', cam],
     ['YOLO + MediaPipe', inference],
+    ['YOLO', perception?.yolo_status ?? (perception?.inference_active ? 'ONLINE' : 'IDLE')],
+    ['MediaPipe', perception?.mediapipe_status ?? (perception?.inference_active ? 'ONLINE' : 'IDLE')],
     ['Pipeline frames', publishing],
     ['Latest detections', latestDetections],
     ['Mission Engine', status ? 'ONLINE' : health?.status === 'ok' ? 'AVAILABLE' : 'OFFLINE'],

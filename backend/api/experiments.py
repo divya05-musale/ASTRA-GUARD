@@ -7,6 +7,7 @@ from backend.services.experiment_service import (
 )
 from backend.services.mission_service import get_mission_service, reset_mission_service
 from backend.services.protocol_service import reset_protocol_service
+from backend.services.browser_perception_service import get_browser_perception_service
 
 router = APIRouter()
 
@@ -37,6 +38,7 @@ def select_experiment(experiment_id: str) -> dict:
 
     mission = reset_mission_service(experiment_path)
     reset_protocol_service(experiment_path)
+    get_browser_perception_service().reset_processor()
     return {
         "selected": True,
         "experiment": mission.experiment,

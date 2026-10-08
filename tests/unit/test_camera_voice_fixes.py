@@ -17,7 +17,7 @@ from backend.services.camera_service import (
 
 def test_camera_service_publish_and_jpeg():
     svc = get_camera_service()
-    frame = np.zeros((240, 320, 3), dtype=np.uint8)
+    frame = np.full((240, 320, 3), 120, dtype=np.uint8)
     assert svc.publish_frame_bgr(frame) is True
     jpeg = svc.get_jpeg()
     assert jpeg is not None and jpeg[:2] == b"\xff\xd8"
@@ -47,26 +47,28 @@ def test_camera_api_routes_registered():
     assert "multipart/x-mixed-replace; boundary=frame" in src
 
 
-def test_camera_publish_roundtrip():
+def test_camera_publish_route_roundtrip():
     import numpy as np
 
     from backend.services.camera_service import (
         encode_bgr_to_jpeg, get_camera_service)
-    from backend.api.camera import camera_publish
+    from backend.api.camera import publish_camera_frame
     import asyncio
 
-    jpeg = encode_bgr_to_jpeg(np.zeros((120, 160, 3), dtype=np.uint8))
+    jpeg = encode_bgr_to_jpeg(np.full((120, 160, 3), 120, dtype=np.uint8))
     assert jpeg is not None
 
     class FakeRequest:
+        headers = {"X-Frame-Width": "160", "X-Frame-Height": "120"}
+
         def __init__(self, body: bytes):
             self._body = body
 
         async def body(self) -> bytes:
             return self._body
 
-    out = asyncio.run(camera_publish(FakeRequest(jpeg)))
-    assert out.get("ok") is True
+    out = asyncio.run(publish_camera_frame(FakeRequest(jpeg)))
+    assert out.get("success") is True
     assert get_camera_service().get_jpeg() is not None
 
 
@@ -79,7 +81,8 @@ def test_camera_no_second_capture_site():
         text = path.read_text(encoding="utf-8", errors="ignore")
         if "cv2.VideoCapture" in text:
             hits.append(str(path))
-    assert hits == [], f"backend must not own cv2.VideoCapture: {hits}"
+    allowed_video_reader = str(root / "backend" / "services" / "video_session_service.py")
+    assert hits == [allowed_video_reader], f"only uploaded-video decoding may use cv2.VideoCapture: {hits}"
 
 
 def test_wrong_object_guidance_contains_both_objects():

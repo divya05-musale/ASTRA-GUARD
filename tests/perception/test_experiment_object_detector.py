@@ -67,6 +67,20 @@ def test_payload_detector_rejects_box_outside_all_zones():
     assert red["metadata"]["protocol_violation"] == "BOX_NOT_FULLY_IN_ZONE"
 
 
+def test_payload_open_rack_requires_configured_aruco_marker_13():
+    detector = _detector("EXP006_PAYLOAD_TRANSFER")
+    frame = np.full((480, 640, 3), 255, dtype=np.uint8)
+    marker = _marker(13, side=180)
+    marker_bgr = cv2.cvtColor(marker, cv2.COLOR_GRAY2BGR)
+    frame[120:120 + marker_bgr.shape[0], 220:220 + marker_bgr.shape[1]] = marker_bgr
+
+    detections = detector.detect(frame)
+    rack = next(item for item in detections if item["name"] == "rack_opened")
+
+    assert rack["confidence"] == 1.0
+    assert rack["metadata"]["marker_id"] == 13
+
+
 def test_payload_hold_requires_one_source_second():
     detector = _detector("EXP006_PAYLOAD_TRANSFER")
     frame = _payload_frame()

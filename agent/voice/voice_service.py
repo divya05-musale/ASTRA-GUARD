@@ -392,11 +392,14 @@ class VoiceGuidance:
         if self._engine is None:
             return
 
-        with self._engine_lock:
-            try:
-                self._engine.stop()
-            except Exception as exc:  # pragma: no cover - platform dependent
-                print(f"[VOICE] Failed to stop speech: {exc}")
+        if not self._engine_lock.acquire(timeout=0.1):
+            return
+        try:
+            self._engine.stop()
+        except Exception as exc:  # pragma: no cover - platform dependent
+            print(f"[VOICE] Failed to stop speech: {exc}")
+        finally:
+            self._engine_lock.release()
 
     def reset(self) -> None:
         """

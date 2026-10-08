@@ -611,14 +611,22 @@ class CameraService:
         """Return the current camera service status."""
         settings = get_settings()
         if settings.is_cloud_mode() or not settings.ENABLE_LIVE_PROCESSOR:
+            with self._lock:
+                now = time.monotonic()
+                external = (
+                    self._external_jpeg is not None
+                    and now - self._external_ts < _EXTERNAL_FRESH_SEC
+                )
+                frame_age = max(0.0, now - self._external_ts) if external else None
+                error = None if external else "Camera capture is disabled in cloud mode."
             return {
-                "connected": False,
-                "enabled": False,
+                "connected": external,
+                "enabled": external,
                 "capture_running": False,
                 "camera_open": False,
-                "external_stream": False,
-                "has_frame": False,
-                "frame_age_seconds": None,
+                "external_stream": external,
+                "has_frame": external,
+                "frame_age_seconds": frame_age,
                 "frames_captured": self._capture_count,
                 "width": self.width,
                 "height": self.height,
@@ -630,7 +638,7 @@ class CameraService:
                 "camera_switch_pending": False,
                 "camera_switch_error": None,
                 "backend": None,
-                "error": "Camera capture is disabled in cloud mode.",
+                "error": error,
                 "cloud_mode": True,
             }
 

@@ -4,8 +4,11 @@ import time
 import logging
 import os
 
+import cv2
+import numpy as np
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import Response, StreamingResponse
+from starlette.concurrency import run_in_threadpool
 
 from backend.core.config import get_settings
 from backend.services.camera_service import (
@@ -16,11 +19,13 @@ from backend.services.camera_service import (
     mjpeg_generator,
 )
 from backend.services.performance_service import get_performance_monitor
+from backend.services.browser_perception_service import get_browser_perception_service
 from backend.schemas.camera import CameraSelectRequest
 from agent.perception.camera import discover_cameras
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+_MAX_BROWSER_FRAME_BYTES = 2 * 1024 * 1024
 
 
 # ---------------------------------------------------------
@@ -140,6 +145,54 @@ async def publish_camera_frame(request: Request):
         "success": True,
         "message": "Camera frame published successfully.",
         "size_bytes": len(jpeg),
+    }
+
+
+@router.post("/camera/browser-frame")
+async def process_browser_camera_frame(request: Request):
+    """Process one JPEG uploaded by the browser through live perception."""
+    jpeg = await request.body()
+    if not jpeg:
+        raise HTTPException(status_code=400, detail="Empty browser camera frame.")
+    if len(jpeg) > _MAX_BROWSER_FRAME_BYTES:
+        raise HTTPException(status_code=413, detail="Browser camera frame exceeds the 2 MB limit.")
+    if not jpeg.startswith(b"\xff\xd8") or not jpeg.endswith(b"\xff\xd9"):
+        raise HTTPException(status_code=400, detail="Invalid JPEG frame.")
+
+    frame = cv2.imdecode(np.frombuffer(jpeg, dtype=np.uint8), cv2.IMREAD_COLOR)
+    if frame is None or frame.size == 0:
+        raise HTTPException(status_code=400, detail="Unable to decode browser camera frame.")
+    if frame.shape[1] > 1920 or frame.shape[0] > 1080:
+        raise HTTPException(status_code=413, detail="Browser camera frame dimensions exceed 1920x1080.")
+
+    camera = get_camera_service()
+    published = camera.publish_external_jpeg(
+        jpeg,
+        width=frame.shape[1],
+        height=frame.shape[0],
+        camera_source="laptop",
+        camera_source_name="Browser Webcam",
+    )
+    if not published:
+        raise HTTPException(status_code=400, detail="Browser frame was rejected by camera validation.")
+    try:
+        processed = await run_in_threadpool(
+            get_browser_perception_service().process_frame,
+            frame,
+        )
+    except Exception as exc:
+        logger.exception("Browser camera frame processing failed")
+        raise HTTPException(
+            status_code=503,
+            detail=f"Browser frame perception is unavailable: {exc}",
+        ) from exc
+
+    return {
+        "success": True,
+        "event": processed["event"],
+        "result": processed["result"],
+        "timings_ms": processed["timings_ms"],
+        "frames_processed": processed["frames_processed"],
     }
 
 

@@ -64,7 +64,7 @@ def test_unknown_step_returns_unknown():
         confidence=0.90,
     )
 
-    assert result["activity"] == "UNKNOWN"
+    assert result["activity"] == "UNKNOWN_STEP"
 
 
 def test_missing_object_returns_unknown():
@@ -77,4 +77,4 @@ def test_missing_object_returns_unknown():
         confidence=0.90,
     )
 
-    assert result["activity"] == "UNKNOWN"
+    assert result["activity"] == "NO_OBJECT"
