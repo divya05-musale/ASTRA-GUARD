@@ -9,6 +9,7 @@ WORKDIR /app
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends libgles2 && \
+    ldconfig -p | grep -q 'libGLESv2.so.2' && \
     rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt ./

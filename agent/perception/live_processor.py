@@ -35,7 +35,7 @@ class LivePerceptionProcessor:
                 "object_detector must provide a detect(frame) method"
             )
 
-        if not hasattr(hand_tracker, "process"):
+        if hand_tracker is not None and not hasattr(hand_tracker, "process"):
             raise TypeError(
                 "hand_tracker must provide a process(frame) method"
             )
@@ -94,7 +94,7 @@ class LivePerceptionProcessor:
 
         # Detect hands using MediaPipe.
         mediapipe_started = time.perf_counter()
-        hands = self.hand_tracker.process(frame)
+        hands = self.hand_tracker.process(frame) if self.hand_tracker is not None else []
         mediapipe_ms = (time.perf_counter() - mediapipe_started) * 1000.0
 
         # Convert MediaPipe normalized hand landmarks

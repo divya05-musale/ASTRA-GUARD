@@ -108,6 +108,37 @@ def test_browser_frame_runs_existing_processor_and_mission_service(monkeypatch):
     assert status["mediapipe_status"] == "ONLINE"
 
 
+def test_browser_frame_keeps_yolo_online_when_mediapipe_initialization_fails(monkeypatch):
+    mission = _FakeMissionService()
+    monkeypatch.setattr(browser_service_module, "get_settings", lambda: Settings())
+    monkeypatch.setattr(browser_service_module, "get_mission_service", lambda: mission)
+    monkeypatch.setattr(browser_service_module, "ObjectDetector", _FakeDetector)
+    monkeypatch.setattr(browser_service_module, "ExperimentObjectDetector", _FakeExperimentDetector)
+
+    def fail_hand_tracker():
+        raise RuntimeError("MediaPipe HandLandmarker initialization failed: missing GLES")
+
+    monkeypatch.setattr(browser_service_module, "HandTracker", fail_hand_tracker)
+    monkeypatch.setattr(
+        browser_service_module,
+        "get_performance_monitor",
+        lambda: type("Monitor", (), {"record_frame": lambda _self, _metrics: None})(),
+    )
+
+    service = BrowserPerceptionService()
+    processed = service.process_frame(np.full((48, 64, 3), 120, dtype=np.uint8))
+
+    assert processed["event"]["objects"] == [{"name": "experiment_container", "confidence": 0.91}]
+    assert processed["event"]["hands"] == []
+    assert processed["result"]["status"] == "CORRECT"
+    status = service.get_status()
+    assert status["processor_status"] == "READY"
+    assert status["yolo_status"] == "ONLINE"
+    assert status["mediapipe_status"] == "UNAVAILABLE"
+    assert "missing GLES" in status["mediapipe_error"]
+    assert status["error"] is None
+
+
 def test_browser_frame_endpoint_accepts_upload_without_opening_camera(monkeypatch):
     camera = _FakeCameraPublisher()
     monkeypatch.setattr("backend.api.camera.get_camera_service", lambda: camera)

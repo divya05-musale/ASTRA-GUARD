@@ -33,6 +33,7 @@ class BrowserPerceptionService:
         self._object_detector: ExperimentObjectDetector | None = None
         self._hand_tracker: HandTracker | None = None
         self._initialization_error: str | None = None
+        self._mediapipe_error: str | None = None
         self._last_error: str | None = None
         self._last_frame_at: float | None = None
         self._frames_processed = 0
@@ -49,9 +50,6 @@ class BrowserPerceptionService:
             raise RuntimeError(self._initialization_error)
 
         settings = get_settings()
-        if not settings.ENABLE_MEDIAPIPE:
-            raise RuntimeError("MediaPipe hand tracking is disabled by configuration.")
-
         model_path = Path(settings.YOLO_MODEL)
         if not model_path.is_absolute():
             model_path = settings.PROJECT_ROOT / model_path
@@ -67,7 +65,23 @@ class BrowserPerceptionService:
                 mission_service._protocol_path,
                 protocol_client=mission_service,
             )
-            hand_tracker = HandTracker()
+        except Exception as exc:
+            with self._status_lock:
+                self._initialization_error = str(exc)
+            raise RuntimeError(self._initialization_error) from exc
+
+        hand_tracker = None
+        mediapipe_error = None
+        if settings.ENABLE_MEDIAPIPE:
+            try:
+                hand_tracker = HandTracker()
+            except Exception as exc:
+                mediapipe_error = str(exc)
+                logger.warning("Browser hand detection is unavailable: %s", exc)
+        else:
+            mediapipe_error = "MediaPipe hand tracking is disabled by configuration."
+
+        try:
             self._object_detector = object_detector
             self._hand_tracker = hand_tracker
             processor = LivePerceptionProcessor(
@@ -77,6 +91,7 @@ class BrowserPerceptionService:
             )
             with self._status_lock:
                 self._processor = processor
+                self._mediapipe_error = mediapipe_error
         except Exception as exc:
             with self._status_lock:
                 self._initialization_error = str(exc)
@@ -136,6 +151,7 @@ class BrowserPerceptionService:
                 self._object_detector = None
                 self._hand_tracker = None
                 self._initialization_error = None
+                self._mediapipe_error = None
                 self._last_error = None
                 self._last_frame_at = None
                 self._frames_processed = 0
@@ -159,6 +175,7 @@ class BrowserPerceptionService:
             processing = self._processing
             processor_initialized = self._processor is not None
             error = self._last_error or self._initialization_error
+            mediapipe_error = self._mediapipe_error
             last_object_count = self._last_object_count
             last_hand_count = self._last_hand_count
             latest_objects = [dict(item) for item in self._last_objects]
@@ -169,7 +186,7 @@ class BrowserPerceptionService:
                 mediapipe_status = "ERROR"
             elif processor_initialized:
                 yolo_status = "ONLINE"
-                mediapipe_status = "ONLINE"
+                mediapipe_status = "ONLINE" if self._hand_tracker is not None else "UNAVAILABLE"
             else:
                 yolo_status = "IDLE"
                 mediapipe_status = "IDLE"
@@ -199,6 +216,7 @@ class BrowserPerceptionService:
             "mediapipe_status": mediapipe_status,
             "mission_engine_status": mission_engine_status,
             "error": error,
+            "mediapipe_error": mediapipe_error,
         }
 
 
