@@ -16,17 +16,24 @@ function MetricGroup({ title, items }) {
 
 export default function SystemHealth({ health, camera, voice, performance, perception, status }) {
   const cam = camera?.connected ? 'ONLINE' : 'OFFLINE';
-  const inference = perception?.inference_active ? 'ACTIVE' : 'IDLE';
+  const inference = perception?.processing ? 'PROCESSING' : perception?.inference_active ? 'ACTIVE' : 'IDLE';
   const publishing = perception?.frame_publishing ? 'PUBLISHING' : 'IDLE';
+  const frameCounts = `${perception?.frames_accepted ?? 0} / ${perception?.frames_processed ?? 0}`;
   const latestDetections = perception?.detections_fresh
     ? `${perception.last_object_count ?? 0} objects · ${perception.last_hand_count ?? 0} hands`
     : 'No recent inference output';
+  const perceptionDiagnostic = perception?.error
+    ? { message: `Perception failed: ${perception.error}`, isError: true }
+    : perception?.mediapipe_status === 'UNAVAILABLE' && perception?.mediapipe_error
+      ? { message: `Hand detection unavailable: ${perception.mediapipe_error}`, isError: false }
+      : null;
   const rows = [
     ['Camera', cam],
     ['YOLO + MediaPipe', inference],
     ['YOLO', perception?.yolo_status ?? (perception?.inference_active ? 'ONLINE' : 'IDLE')],
     ['MediaPipe', perception?.mediapipe_status ?? (perception?.inference_active ? 'ONLINE' : 'IDLE')],
     ['Pipeline frames', publishing],
+    ['Accepted / processed', frameCounts],
     ['Latest detections', latestDetections],
     ['Mission Engine', status ? 'ONLINE' : health?.status === 'ok' ? 'AVAILABLE' : 'OFFLINE'],
     ['Voice', voice?.engine_ready ? 'ONLINE' : 'OFFLINE'],
@@ -38,10 +45,17 @@ export default function SystemHealth({ health, camera, voice, performance, perce
         {rows.map(([k, v]) => (
           <li key={k}>
             <span>{k}</span>
-            <b className={['ONLINE', 'AVAILABLE', 'ACTIVE', 'PUBLISHING'].includes(v) ? 'ok' : 'bad'}>{v}</b>
+            <b className={k === 'Accepted / processed'
+              ? perception?.frames_processed > 0 ? 'ok' : 'bad'
+              : ['ONLINE', 'AVAILABLE', 'ACTIVE', 'PROCESSING', 'PUBLISHING'].includes(v) ? 'ok' : 'bad'}>{v}</b>
           </li>
         ))}
       </ul>
+      {perceptionDiagnostic ? (
+        <div className={`perception-diagnostic${perceptionDiagnostic.isError ? ' perception-diagnostic-error' : ''}`} role={perceptionDiagnostic.isError ? 'alert' : 'status'}>
+          {perceptionDiagnostic.message}
+        </div>
+      ) : null}
       <details className="performance-details" open>
         <summary>Performance</summary>
         <div className="performance-groups">

@@ -5,7 +5,10 @@ from __future__ import annotations
 import threading
 import time
 import logging
+from copy import deepcopy
+from datetime import datetime, timezone
 from pathlib import Path
+from queue import Empty, Full, Queue
 from typing import Any, Dict
 
 import numpy as np
@@ -23,12 +26,21 @@ _DETECTION_FRESH_SECONDS = 3.0
 logger = logging.getLogger(__name__)
 
 
+class FrameQueueFullError(RuntimeError):
+    """Raised when the bounded browser-frame queue cannot accept another frame."""
+
+
 class BrowserPerceptionService:
     """Own one lazy YOLO/MediaPipe processor for frames received over HTTP."""
 
     def __init__(self) -> None:
         self._processing_lock = threading.Lock()
         self._status_lock = threading.Lock()
+        self._worker_start_lock = threading.Lock()
+        self._frame_queue: Queue[tuple[int, np.ndarray, int]] = Queue(maxsize=1)
+        self._worker: threading.Thread | None = None
+        self._generation = 0
+        self._next_frame_id = 1
         self._processor: LivePerceptionProcessor | None = None
         self._object_detector: ExperimentObjectDetector | None = None
         self._hand_tracker: HandTracker | None = None
@@ -36,7 +48,17 @@ class BrowserPerceptionService:
         self._mediapipe_error: str | None = None
         self._last_error: str | None = None
         self._last_frame_at: float | None = None
+        self._last_received_at: str | None = None
+        self._last_processed_frame_id: int | None = None
+        self._active_frame_id: int | None = None
+        self._latest_event: dict[str, Any] | None = None
+        self._latest_result: Any = None
+        self._latest_timings_ms: dict[str, Any] = {}
+        self._frames_received = 0
+        self._frames_accepted = 0
         self._frames_processed = 0
+        self._frames_failed = 0
+        self._frames_rejected = 0
         self._last_object_count = 0
         self._last_hand_count = 0
         self._last_objects: list[dict[str, Any]] = []
@@ -98,8 +120,8 @@ class BrowserPerceptionService:
             raise RuntimeError(self._initialization_error) from exc
         return processor
 
-    def process_frame(self, frame: np.ndarray) -> Dict[str, Any]:
-        """Run one uploaded BGR frame through YOLO, MediaPipe, and mission logic."""
+    @staticmethod
+    def _validate_frame(frame: np.ndarray) -> None:
         if (
             not isinstance(frame, np.ndarray)
             or frame.ndim != 3
@@ -108,45 +130,137 @@ class BrowserPerceptionService:
         ):
             raise ValueError("Browser frame must decode to a non-empty BGR image.")
 
-        with self._processing_lock:
-            with self._status_lock:
-                self._processing = True
-            started = time.perf_counter()
-            try:
-                processor = self._ensure_processor()
-                processed = processor.process_frame(frame, source="camera")
-                event = processed["event"]
-                timings = dict(processed.get("timings_ms") or {})
-                timings["process_frame_ms"] = round((time.perf_counter() - started) * 1000.0, 2)
-                get_performance_monitor().record_frame(timings)
+    def _ensure_worker(self) -> None:
+        with self._worker_start_lock:
+            if self._worker is None or not self._worker.is_alive():
+                self._worker = threading.Thread(
+                    target=self._worker_loop,
+                    daemon=True,
+                    name="astra-browser-perception",
+                )
+                self._worker.start()
 
-                with self._status_lock:
-                    self._frames_processed += 1
-                    self._last_object_count = len(event.objects)
-                    self._last_hand_count = len(event.hands)
-                    self._last_objects = [dict(item) for item in event.objects]
-                    self._last_hands = [dict(item) for item in event.hands]
-                    self._last_frame_at = time.monotonic()
-                    self._last_error = None
-                return {
-                    "event": event.to_dict(),
-                    "result": processed["result"],
-                    "timings_ms": timings,
-                    "frames_processed": self._frames_processed,
-                }
-            except Exception as exc:
-                with self._status_lock:
-                    self._last_error = str(exc)
-                raise
+    def enqueue_frame(self, frame: np.ndarray) -> Dict[str, int]:
+        """Accept one decoded frame for bounded background processing."""
+        self._validate_frame(frame)
+        self._ensure_worker()
+        with self._status_lock:
+            self._frames_received += 1
+            self._last_received_at = datetime.now(timezone.utc).isoformat()
+            frame_id = self._next_frame_id
+            self._next_frame_id += 1
+            try:
+                self._frame_queue.put_nowait((frame_id, frame.copy(), self._generation))
+            except Full as exc:
+                self._frames_rejected += 1
+                logger.warning(
+                    "Browser frame rejected: processing queue full frame_id=%d queue_depth=%d",
+                    frame_id,
+                    self._frame_queue.qsize(),
+                )
+                raise FrameQueueFullError("Browser frame processing queue is full.") from exc
+            self._frames_accepted += 1
+            logger.debug(
+                "Browser frame accepted frame_id=%d width=%d height=%d queue_depth=%d",
+                frame_id,
+                frame.shape[1],
+                frame.shape[0],
+                self._frame_queue.qsize(),
+            )
+            return {
+                "frame_id": frame_id,
+                "frames_received": self._frames_received,
+                "frames_accepted": self._frames_accepted,
+                "frames_processed": self._frames_processed,
+                "queue_depth": self._frame_queue.qsize(),
+            }
+
+    def _worker_loop(self) -> None:
+        while True:
+            frame_id, frame, generation = self._frame_queue.get()
+            try:
+                with self._processing_lock:
+                    with self._status_lock:
+                        if generation != self._generation:
+                            continue
+                        self._active_frame_id = frame_id
+                    started = time.perf_counter()
+                    logger.debug("Browser frame inference started frame_id=%d", frame_id)
+                    try:
+                        processed = self._process_frame_locked(frame)
+                        with self._status_lock:
+                            self._last_processed_frame_id = frame_id
+                        logger.debug(
+                            "Browser frame inference completed frame_id=%d duration_ms=%.2f detections=%d",
+                            frame_id,
+                            (time.perf_counter() - started) * 1000.0,
+                            len(processed["event"].objects),
+                        )
+                    except Exception:
+                        with self._status_lock:
+                            self._frames_failed += 1
+                        logger.exception("Browser frame processing failed frame_id=%d", frame_id)
             finally:
                 with self._status_lock:
-                    self._processing = False
+                    if self._active_frame_id == frame_id:
+                        self._active_frame_id = None
+                self._frame_queue.task_done()
+
+    def process_frame(self, frame: np.ndarray) -> Dict[str, Any]:
+        """Synchronously process one BGR frame for local callers and tests."""
+        self._validate_frame(frame)
+        with self._processing_lock:
+            return self._process_frame_locked(frame)
+
+    def _process_frame_locked(self, frame: np.ndarray) -> Dict[str, Any]:
+        with self._status_lock:
+            self._processing = True
+        started = time.perf_counter()
+        try:
+            processor = self._ensure_processor()
+            processed = processor.process_frame(frame, source="camera")
+            event = processed["event"]
+            timings = dict(processed.get("timings_ms") or {})
+            timings["process_frame_ms"] = round((time.perf_counter() - started) * 1000.0, 2)
+            get_performance_monitor().record_frame(timings)
+
+            with self._status_lock:
+                self._frames_processed += 1
+                self._last_object_count = len(event.objects)
+                self._last_hand_count = len(event.hands)
+                self._last_objects = deepcopy(event.objects)
+                self._last_hands = deepcopy(event.hands)
+                self._latest_event = event.to_dict()
+                self._latest_result = deepcopy(processed["result"])
+                self._latest_timings_ms = dict(timings)
+                self._last_frame_at = time.monotonic()
+                self._last_error = None
+            return {
+                "event": event.to_dict(),
+                "result": processed["result"],
+                "timings_ms": timings,
+                "frames_processed": self._frames_processed,
+            }
+        except Exception as exc:
+            with self._status_lock:
+                self._last_error = str(exc)
+            raise
+        finally:
+            with self._status_lock:
+                self._processing = False
 
     def reset_processor(self) -> None:
         """Discard the processor bound to the previously selected mission."""
         with self._processing_lock:
             hand_tracker = self._hand_tracker
             with self._status_lock:
+                self._generation += 1
+                while True:
+                    try:
+                        self._frame_queue.get_nowait()
+                        self._frame_queue.task_done()
+                    except Empty:
+                        break
                 self._processor = None
                 self._object_detector = None
                 self._hand_tracker = None
@@ -154,7 +268,17 @@ class BrowserPerceptionService:
                 self._mediapipe_error = None
                 self._last_error = None
                 self._last_frame_at = None
+                self._last_received_at = None
+                self._last_processed_frame_id = None
+                self._active_frame_id = None
+                self._latest_event = None
+                self._latest_result = None
+                self._latest_timings_ms = {}
+                self._frames_received = 0
+                self._frames_accepted = 0
                 self._frames_processed = 0
+                self._frames_failed = 0
+                self._frames_rejected = 0
                 self._last_object_count = 0
                 self._last_hand_count = 0
                 self._last_objects = []
@@ -176,6 +300,17 @@ class BrowserPerceptionService:
             processor_initialized = self._processor is not None
             error = self._last_error or self._initialization_error
             mediapipe_error = self._mediapipe_error
+            queue_depth = self._frame_queue.qsize()
+            frames_received = self._frames_received
+            frames_accepted = self._frames_accepted
+            frames_failed = self._frames_failed
+            frames_rejected = self._frames_rejected
+            active_frame_id = self._active_frame_id
+            last_processed_frame_id = self._last_processed_frame_id
+            last_received_at = self._last_received_at
+            latest_event = deepcopy(self._latest_event)
+            latest_result = deepcopy(self._latest_result)
+            latest_timings_ms = dict(self._latest_timings_ms)
             last_object_count = self._last_object_count
             last_hand_count = self._last_hand_count
             latest_objects = [dict(item) for item in self._last_objects]
@@ -187,11 +322,15 @@ class BrowserPerceptionService:
             elif processor_initialized:
                 yolo_status = "ONLINE"
                 mediapipe_status = "ONLINE" if self._hand_tracker is not None else "UNAVAILABLE"
+            elif processing:
+                yolo_status = "INITIALIZING"
+                mediapipe_status = "INITIALIZING"
             else:
                 yolo_status = "IDLE"
                 mediapipe_status = "IDLE"
             processor_status = (
                 "ERROR" if error else "PROCESSING" if processing
+                else "QUEUED" if queue_depth
                 else "READY" if processor_initialized else "IDLE"
             )
 
@@ -210,6 +349,17 @@ class BrowserPerceptionService:
             "latest_objects": latest_objects,
             "latest_hands": latest_hands,
             "frames_processed": frames_processed,
+            "frames_received": frames_received,
+            "frames_accepted": frames_accepted,
+            "frames_failed": frames_failed,
+            "frames_rejected": frames_rejected,
+            "queue_depth": queue_depth,
+            "active_frame_id": active_frame_id,
+            "last_processed_frame_id": last_processed_frame_id,
+            "last_received_at": last_received_at,
+            "latest_event": latest_event,
+            "latest_result": latest_result,
+            "latest_timings_ms": latest_timings_ms,
             "processing": processing,
             "processor_status": processor_status,
             "yolo_status": yolo_status,

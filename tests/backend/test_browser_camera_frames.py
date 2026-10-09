@@ -1,8 +1,11 @@
 from __future__ import annotations
 
 import threading
+from pathlib import Path
 
+import cv2
 import numpy as np
+import pytest
 from fastapi.testclient import TestClient
 
 from agent.perception.perception_event import PerceptionEvent
@@ -31,7 +34,7 @@ class _FakeMissionService:
             "status": "CORRECT",
             "step_id": "S001",
             "next_step_id": "S002",
-            "detected_object": event.objects[0]["name"],
+            "detected_object": event.objects[0].get("name", event.objects[0].get("class_name")) if event.objects else None,
             "perception": {"activity": "CHECK_EQUIPMENT", "confidence": 0.91},
         }
 
@@ -141,17 +144,23 @@ def test_browser_frame_keeps_yolo_online_when_mediapipe_initialization_fails(mon
 
 def test_browser_frame_endpoint_accepts_upload_without_opening_camera(monkeypatch):
     camera = _FakeCameraPublisher()
+    accepted_frames = []
+
+    class _Queue:
+        def enqueue_frame(self, frame):
+            accepted_frames.append(frame.copy())
+            return {
+                "frame_id": 1,
+                "frames_received": 1,
+                "frames_accepted": 1,
+                "frames_processed": 0,
+                "queue_depth": 1,
+            }
+
     monkeypatch.setattr("backend.api.camera.get_camera_service", lambda: camera)
     monkeypatch.setattr(
         "backend.api.camera.get_browser_perception_service",
-        lambda: type("Processor", (), {
-            "process_frame": lambda _self, frame: {
-                "event": {"source": "camera", "objects": [], "hands": []},
-                "result": {"status": "UNCERTAIN", "step_id": "S001"},
-                "timings_ms": {"yolo_ms": 4.0, "mediapipe_ms": 3.0},
-                "frames_processed": 1,
-            },
-        })(),
+        lambda: _Queue(),
     )
     monkeypatch.setattr(
         "backend.api.camera.cv2.VideoCapture",
@@ -165,7 +174,13 @@ def test_browser_frame_endpoint_accepts_upload_without_opening_camera(monkeypatc
     )
 
     assert response.status_code == 200
-    assert response.json()["result"]["status"] == "UNCERTAIN"
+    assert response.json()["accepted"] is True
+    assert response.json()["event"] is None
+    assert response.json()["result"] is None
+    assert response.json()["timings_ms"] is None
+    assert response.json()["frames_processed"] == 0
+    assert response.json()["frame_id"] == 1
+    assert accepted_frames[0].shape == (48, 64, 3)
     assert len(camera.frames) == 1
     assert camera.frames[0][1]["camera_source"] == "laptop"
 
@@ -178,6 +193,220 @@ def test_browser_frame_endpoint_rejects_invalid_jpeg():
     )
 
     assert response.status_code == 400
+
+
+def test_browser_frame_endpoint_rejects_empty_upload():
+    response = client.post(
+        "/api/camera/browser-frame",
+        content=b"",
+        headers={"Content-Type": "image/jpeg"},
+    )
+
+    assert response.status_code == 400
+    assert "empty" in response.json()["detail"].lower()
+
+
+def test_browser_frame_endpoint_rejects_jpeg_markers_with_invalid_image_data(monkeypatch):
+    monkeypatch.setattr("backend.api.camera.get_camera_service", lambda: _FakeCameraPublisher())
+
+    response = client.post(
+        "/api/camera/browser-frame",
+        content=b"\xff\xd8not-an-image\xff\xd9",
+        headers={"Content-Type": "image/jpeg"},
+    )
+
+    assert response.status_code == 400
+    assert "decode" in response.json()["detail"].lower()
+
+
+def test_browser_frame_endpoint_reports_queue_backpressure(monkeypatch):
+    monkeypatch.setattr("backend.api.camera.get_camera_service", lambda: _FakeCameraPublisher())
+
+    class _FullQueue:
+        def enqueue_frame(self, _frame):
+            raise browser_service_module.FrameQueueFullError("full")
+
+    monkeypatch.setattr("backend.api.camera.get_browser_perception_service", lambda: _FullQueue())
+    response = client.post(
+        "/api/camera/browser-frame",
+        content=_jpeg_frame(),
+        headers={"Content-Type": "image/jpeg"},
+    )
+
+    assert response.status_code == 429
+    assert response.headers["retry-after"] == "1"
+    assert "queue is full" in response.json()["detail"]
+
+
+def test_browser_frame_endpoint_acknowledges_while_inference_is_still_running(monkeypatch):
+    started = threading.Event()
+    release = threading.Event()
+
+    class _BlockingProcessor:
+        def process_frame(self, _frame, source):
+            assert source == "camera"
+            started.set()
+            assert release.wait(timeout=3)
+            return {
+                "event": PerceptionEvent(),
+                "result": {"status": "UNCERTAIN"},
+                "timings_ms": {"yolo_ms": 1.0},
+            }
+
+    monkeypatch.setattr("backend.api.camera.get_camera_service", lambda: _FakeCameraPublisher())
+    monkeypatch.setattr(browser_service_module, "get_mission_service", lambda: _FakeMissionService())
+    monkeypatch.setattr(
+        browser_service_module,
+        "get_performance_monitor",
+        lambda: type("Monitor", (), {"record_frame": lambda _self, _metrics: None})(),
+    )
+    service = BrowserPerceptionService()
+    service._processor = _BlockingProcessor()
+    monkeypatch.setattr("backend.api.camera.get_browser_perception_service", lambda: service)
+
+    try:
+        response = client.post(
+            "/api/camera/browser-frame",
+            content=_jpeg_frame(),
+            headers={"Content-Type": "image/jpeg"},
+        )
+
+        assert response.status_code == 200
+        assert response.json()["accepted"] is True
+        assert started.wait(timeout=1)
+        status = service.get_status()
+        assert status["processing"] is True
+        assert status["frames_processed"] == 0
+        assert status["frames_accepted"] == 1
+    finally:
+        release.set()
+        service._frame_queue.join()
+
+
+def test_browser_frame_queue_is_bounded_under_repeated_uploads(monkeypatch):
+    started = threading.Event()
+    release = threading.Event()
+
+    class _BlockingProcessor:
+        def process_frame(self, _frame, source):
+            assert source == "camera"
+            started.set()
+            assert release.wait(timeout=3)
+            return {
+                "event": PerceptionEvent(),
+                "result": {"status": "UNCERTAIN"},
+                "timings_ms": {},
+            }
+
+    monkeypatch.setattr(browser_service_module, "get_mission_service", lambda: _FakeMissionService())
+    monkeypatch.setattr(
+        browser_service_module,
+        "get_performance_monitor",
+        lambda: type("Monitor", (), {"record_frame": lambda _self, _metrics: None})(),
+    )
+    service = BrowserPerceptionService()
+    service._processor = _BlockingProcessor()
+    frame = np.full((48, 64, 3), 120, dtype=np.uint8)
+
+    try:
+        first = service.enqueue_frame(frame)
+        assert started.wait(timeout=1)
+        second = service.enqueue_frame(frame)
+        with pytest.raises(browser_service_module.FrameQueueFullError):
+            service.enqueue_frame(frame)
+
+        status = service.get_status()
+        assert first["frame_id"] != second["frame_id"]
+        assert status["frames_received"] == 3
+        assert status["frames_accepted"] == 2
+        assert status["frames_rejected"] == 1
+        assert status["queue_depth"] <= 1
+        assert status["frames_processed"] == 0
+    finally:
+        release.set()
+        service._frame_queue.join()
+
+    assert service.get_status()["frames_processed"] == 2
+
+
+def test_browser_worker_reports_inference_failures(monkeypatch):
+    finished = threading.Event()
+
+    class _FailingProcessor:
+        def process_frame(self, _frame, source):
+            assert source == "camera"
+            finished.set()
+            raise RuntimeError("YOLO inference failed: test failure")
+
+    monkeypatch.setattr(browser_service_module, "get_mission_service", lambda: _FakeMissionService())
+    service = BrowserPerceptionService()
+    service._processor = _FailingProcessor()
+    service.enqueue_frame(np.full((48, 64, 3), 120, dtype=np.uint8))
+
+    assert finished.wait(timeout=1)
+    service._frame_queue.join()
+    status = service.get_status()
+
+    assert status["frames_failed"] == 1
+    assert status["frames_processed"] == 0
+    assert status["error"] == "YOLO inference failed: test failure"
+    assert status["latest_objects"] == []
+    assert status["detections_fresh"] is False
+
+
+def test_status_has_no_detection_until_inference_completes(monkeypatch):
+    monkeypatch.setattr(browser_service_module, "get_mission_service", lambda: _FakeMissionService())
+    status = BrowserPerceptionService().get_status()
+
+    assert status["frames_processed"] == 0
+    assert status["latest_objects"] == []
+    assert status["latest_event"] is None
+    assert status["detections_fresh"] is False
+
+
+def test_browser_frame_runs_real_yolo_on_bundled_image(monkeypatch):
+    ultralytics = pytest.importorskip("ultralytics")
+    image_path = Path(ultralytics.__file__).parent / "assets" / "bus.jpg"
+    model_path = Path("yolo11n.pt")
+    if not image_path.is_file() or not model_path.is_file():
+        pytest.skip("Bundled Ultralytics image or configured local YOLO weights are unavailable.")
+
+    frame = cv2.imread(str(image_path), cv2.IMREAD_COLOR)
+    assert frame is not None and frame.size > 0
+    mission = _FakeMissionService()
+    monkeypatch.setattr(
+        browser_service_module,
+        "get_settings",
+        lambda: Settings(ENABLE_MEDIAPIPE=False),
+    )
+    monkeypatch.setattr(browser_service_module, "get_mission_service", lambda: mission)
+    monkeypatch.setattr(
+        browser_service_module,
+        "get_performance_monitor",
+        lambda: type("Monitor", (), {"record_frame": lambda _self, _metrics: None})(),
+    )
+    service = BrowserPerceptionService()
+    monkeypatch.setattr("backend.api.camera.get_camera_service", lambda: _FakeCameraPublisher())
+    monkeypatch.setattr("backend.api.camera.get_browser_perception_service", lambda: service)
+
+    jpeg = encode_bgr_to_jpeg(frame)
+    assert jpeg is not None
+    response = client.post(
+        "/api/camera/browser-frame",
+        content=jpeg,
+        headers={"Content-Type": "image/jpeg"},
+    )
+    assert response.status_code == 200
+    assert response.json()["accepted"] is True
+    service._frame_queue.join()
+    status = service.get_status()
+
+    assert status["frames_received"] == 1
+    assert status["frames_accepted"] == 1
+    assert status["frames_processed"] == 1
+    assert status["latest_event"]["objects"]
+    assert all(item.get("class_name") and item.get("bbox") for item in status["latest_objects"])
+    assert status["latest_timings_ms"]["yolo_ms"] > 0
 
 
 def test_perception_status_endpoint_reports_pipeline_fields():

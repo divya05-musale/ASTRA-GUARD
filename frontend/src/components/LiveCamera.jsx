@@ -232,7 +232,9 @@ export default function LiveCamera({ camera, onCameraChanged }) {
             await api.processBrowserFrame(frame);
             if (!cancelled && mountedRef.current) setFrameUploadError('');
           } catch (error) {
-            if (!cancelled && mountedRef.current) {
+            if (error?.status === 429) {
+              nextDelay = error.retryAfterMs ?? BROWSER_FRAME_RETRY_INTERVAL_MS;
+            } else if (!cancelled && mountedRef.current) {
               const detail = error instanceof Error ? error.message : String(error);
               setFrameUploadError(stage === 'capture'
                 ? `Frame capture failed: ${detail}`

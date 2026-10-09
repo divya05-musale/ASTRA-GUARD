@@ -1,6 +1,11 @@
 const DEFAULT_LOCAL_API_BASE = 'http://127.0.0.1:8001'
 const DEFAULT_CLOUD_API_BASE = 'https://astra-guard-backend.onrender.com'
-const BROWSER_FRAME_REQUEST_TIMEOUT_MS = 15000
+const configuredBrowserFrameTimeout = Number(import.meta.env.VITE_BROWSER_FRAME_REQUEST_TIMEOUT_MS)
+const BROWSER_FRAME_REQUEST_TIMEOUT_MS = Number.isFinite(configuredBrowserFrameTimeout)
+  && configuredBrowserFrameTimeout >= 1000
+  && configuredBrowserFrameTimeout <= 60000
+  ? configuredBrowserFrameTimeout
+  : 15000
 
 function resolveApiBase() {
   const configuredBase = import.meta.env.VITE_API_BASE_URL?.trim()
@@ -99,11 +104,15 @@ export const api = {
       })
       if (!res.ok) {
         const response = await res.json().catch(() => ({}))
-        throw new Error(response?.detail ?? `POST /api/camera/browser-frame -> ${res.status}`)
+        const error = new Error(response?.detail ?? `POST /api/camera/browser-frame -> ${res.status}`)
+        error.status = res.status
+        error.retryAfterMs = Math.max(250, Number(res.headers.get('Retry-After')) * 1000 || 1000)
+        throw error
       }
       return await res.json()
     } catch (error) {
       if (error?.name === 'AbortError') {
+        console.warn('Browser frame upload request timed out', error)
         throw new Error('Browser frame upload timed out. Check the backend connection and try again.')
       }
       throw error

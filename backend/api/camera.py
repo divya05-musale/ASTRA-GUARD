@@ -8,7 +8,6 @@ import cv2
 import numpy as np
 from fastapi import APIRouter, HTTPException, Query, Request
 from fastapi.responses import Response, StreamingResponse
-from starlette.concurrency import run_in_threadpool
 
 from backend.core.config import get_settings
 from backend.services.camera_service import (
@@ -19,7 +18,10 @@ from backend.services.camera_service import (
     mjpeg_generator,
 )
 from backend.services.performance_service import get_performance_monitor
-from backend.services.browser_perception_service import get_browser_perception_service
+from backend.services.browser_perception_service import (
+    FrameQueueFullError,
+    get_browser_perception_service,
+)
 from backend.schemas.camera import CameraSelectRequest
 from agent.perception.camera import discover_cameras
 
@@ -150,19 +152,35 @@ async def publish_camera_frame(request: Request):
 
 @router.post("/camera/browser-frame")
 async def process_browser_camera_frame(request: Request):
-    """Process one JPEG uploaded by the browser through live perception."""
+    """Validate and queue one browser JPEG for background live perception."""
     jpeg = await request.body()
+    logger.debug("Browser frame request received bytes=%d", len(jpeg))
     if not jpeg:
+        logger.warning("Browser frame rejected: empty request body")
         raise HTTPException(status_code=400, detail="Empty browser camera frame.")
     if len(jpeg) > _MAX_BROWSER_FRAME_BYTES:
+        logger.warning("Browser frame rejected: payload too large size_bytes=%d", len(jpeg))
         raise HTTPException(status_code=413, detail="Browser camera frame exceeds the 2 MB limit.")
     if not jpeg.startswith(b"\xff\xd8") or not jpeg.endswith(b"\xff\xd9"):
+        logger.warning("Browser frame rejected: invalid JPEG markers size_bytes=%d", len(jpeg))
         raise HTTPException(status_code=400, detail="Invalid JPEG frame.")
 
     frame = cv2.imdecode(np.frombuffer(jpeg, dtype=np.uint8), cv2.IMREAD_COLOR)
     if frame is None or frame.size == 0:
+        logger.warning("Browser frame rejected: JPEG decode failed size_bytes=%d", len(jpeg))
         raise HTTPException(status_code=400, detail="Unable to decode browser camera frame.")
+    logger.debug(
+        "Browser frame JPEG decoded width=%d height=%d size_bytes=%d",
+        frame.shape[1],
+        frame.shape[0],
+        len(jpeg),
+    )
     if frame.shape[1] > 1920 or frame.shape[0] > 1080:
+        logger.warning(
+            "Browser frame rejected: dimensions exceed limit width=%d height=%d",
+            frame.shape[1],
+            frame.shape[0],
+        )
         raise HTTPException(status_code=413, detail="Browser camera frame dimensions exceed 1920x1080.")
 
     camera = get_camera_service()
@@ -174,25 +192,34 @@ async def process_browser_camera_frame(request: Request):
         camera_source_name="Browser Webcam",
     )
     if not published:
+        logger.warning("Browser frame rejected by camera validation size_bytes=%d", len(jpeg))
         raise HTTPException(status_code=400, detail="Browser frame was rejected by camera validation.")
     try:
-        processed = await run_in_threadpool(
-            get_browser_perception_service().process_frame,
-            frame,
+        accepted = get_browser_perception_service().enqueue_frame(frame)
+    except FrameQueueFullError as exc:
+        logger.warning(
+            "Browser frame not accepted: processing queue full width=%d height=%d",
+            frame.shape[1],
+            frame.shape[0],
         )
-    except Exception as exc:
-        logger.exception("Browser camera frame processing failed")
         raise HTTPException(
-            status_code=503,
-            detail=f"Browser frame perception is unavailable: {exc}",
+            status_code=429,
+            detail="Browser frame processing queue is full; retry shortly.",
+            headers={"Retry-After": "1"},
         ) from exc
+    except Exception as exc:
+        logger.exception("Browser frame could not be queued")
+        raise HTTPException(status_code=503, detail=f"Browser frame perception is unavailable: {exc}") from exc
 
     return {
         "success": True,
-        "event": processed["event"],
-        "result": processed["result"],
-        "timings_ms": processed["timings_ms"],
-        "frames_processed": processed["frames_processed"],
+        "accepted": True,
+        "message": "Browser camera frame accepted for processing.",
+        "size_bytes": len(jpeg),
+        "event": None,
+        "result": None,
+        "timings_ms": None,
+        **accepted,
     }
 
 

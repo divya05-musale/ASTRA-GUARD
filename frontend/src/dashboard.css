@@ -105,6 +105,8 @@ body {
 .alert-hint { margin-top: 10px; font-size: 12px; color: var(--muted); }
 .camera-card { overflow: hidden; }
 .camera-control-error { margin-top: 8px; color: var(--danger); font-size: 12px; }
+.perception-diagnostic { margin-top: 8px; padding: 8px 10px; border: 1px solid var(--border); border-left: 3px solid var(--warning); border-radius: 6px; background: var(--warning-bg); color: var(--warning); font-size: 12px; overflow-wrap: anywhere; }
+.perception-diagnostic-error { border-left-color: var(--danger); color: var(--danger); }
 .camera-source-controls { display: flex; align-items: end; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
 .camera-source-field { display: grid; gap: 4px; min-width: 190px; color: var(--muted); font-size: 10.5px; font-weight: 700; }
 .camera-source-field select, .camera-source-field input { min-height: 32px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface); color: var(--text); padding: 5px 8px; font: inherit; }
